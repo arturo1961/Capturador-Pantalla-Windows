@@ -1,6 +1,6 @@
 # Solución al error «Visual Studio no admite .NET 10.0 de destino»
 
-Esta edición de CapturaLibre DNET 2.4 beta utiliza **C# / Windows Forms / .NET 8**.
+Esta edición estable de CapturaLibre DNET 2.4.0 utiliza **C# / Windows Forms / .NET 8**.
 No necesitas Visual Studio 2026 (18.0) ni cambiar el lenguaje del proyecto.
 
 ## Pasos para abrirlo en Visual Studio 2022
@@ -20,4 +20,4 @@ No necesitas Visual Studio 2026 (18.0) ni cambiar el lenguaje del proyecto.
 
 ## Estado
 
-El paquete de GitHub incluye el código fuente y se entrega además un ZIP de Windows con el EXE autónomo ya compilado. La edición sigue siendo beta hasta completar toda la lista de pruebas en varios equipos.
+El paquete de GitHub incluye el código fuente y se entrega además un ZIP de Windows con el EXE autónomo ya compilado. Para futuras versiones se debe repetir la lista de pruebas en los equipos compatibles.

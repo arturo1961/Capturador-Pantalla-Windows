@@ -1,8 +1,8 @@
-# 📸 CapturaLibre 2.4 beta, edición DNET — C# / .NET 8
+# 📸 CapturaLibre DNET 2.4.0 — C# / .NET 8
 
 CapturaLibre es un capturador y editor de pantalla **gratis, en español y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión beta:** el proyecto compila correctamente en Windows con .NET 8. Antes de distribuirlo públicamente, completa las pruebas funcionales de `PRUEBAS.md` en las resoluciones y escalas que vayas a utilizar.
+> **Versión estable 2.4.0:** compilada y comprobada en Windows con .NET 8. Conservamos `PRUEBAS.md` para validar futuras modificaciones y nuevos equipos.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -29,7 +29,7 @@ La versión 2.4 incluye un **icono propio** para el EXE, las ventanas y la barra
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-beta-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.4.0-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022
@@ -77,5 +77,5 @@ Este proyecto es de código abierto. Consulta [CONTRIBUTING.md](CONTRIBUTING.md)
 
 - Programa diseñado exclusivamente para Windows: requiere WinForms y las APIs de captura del escritorio de Windows.
 - La captura de una ventana obtiene el contenido visible de su área en pantalla, **no** una imagen garantizada de ventanas tapadas, de contenido protegido o de ventanas fuera de pantalla.
-- No se ha verificado todavía en Windows 10/11 ni en equipos con múltiples monitores y diferentes escalas de pantalla. Sigue `PRUEBAS.md`.
+- Se ha verificado en Windows 11. Para nuevas versiones, monitores múltiples o configuraciones distintas, sigue `PRUEBAS.md`.
 - Todavía no hay instalador MSI, firma digital ni actualización automática.

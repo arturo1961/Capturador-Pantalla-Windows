@@ -1,5 +1,13 @@
 # Historial de versiones
 
+## 2.4.0 (versión estable)
+
+- Primera publicación estable de CapturaLibre DNET.
+- Interfaz verificada con escalado alto de Windows y todas las opciones visibles.
+- Modo DNET con guardado PNG directo, nombres correlativos y disparo externo.
+- Ejecutable autónomo de Windows x64 en un único archivo.
+- Código fuente, licencia MIT, documentación, compilación automática y patrocinio integrados en GitHub.
+
 ## 2.4.0-beta.2 (edición DNET)
 
 - Nuevo **Modo DNET** para guardar directamente en PNG, sin abrir el editor después de cada captura.

@@ -1,4 +1,4 @@
-# Verificación de CapturaLibre DNET 2.4.0-beta.2
+# Verificación de CapturaLibre DNET 2.4.0
 
 - Se ha partido del proyecto 2.2 .NET 8/Windows Forms proporcionado en la conversación.
 - Se ha comprobado en el código que solo cambian `EditorForm.cs`, la versión del proyecto y la documentación.
