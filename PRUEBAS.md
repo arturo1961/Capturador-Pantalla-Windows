@@ -29,7 +29,9 @@ Registra versión de Windows, resolución/escalado de cada pantalla y el resulta
 
 ## Modo DNET
 
-- [ ] Activar «Modo DNET» y elegir una carpeta conserva ambas preferencias tras reiniciar.
+- [ ] Activar «Activar disparo externo DNET» y elegir una carpeta conserva ambas preferencias tras reiniciar.
+- [ ] Con el disparo externo DNET activado, «Capturar ventana» sigue abriendo el editor y permite pintar sobre la imagen.
+- [ ] «Captura DNET en 5 s» guarda directamente el PNG sin abrir el editor.
 - [ ] «Captura DNET en 5 s» oculta CapturaLibre antes de la cuenta atrás y permite dejar desplegado un menú de DNET.
 - [ ] La captura se guarda directamente en PNG y no abre el editor.
 - [ ] Los nombres automáticos comienzan por `001`, continúan correlativamente y no sobrescriben imágenes anteriores.

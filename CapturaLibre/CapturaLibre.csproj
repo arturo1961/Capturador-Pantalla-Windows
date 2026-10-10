@@ -11,10 +11,10 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <AssemblyName>CapturaLibre_DNET</AssemblyName>
     <RootNamespace>CapturaLibre</RootNamespace>
-    <Version>2.4.0</Version>
+    <Version>2.4.1</Version>
     <Authors>arturo1961 y colaboradores de CapturaLibre</Authors>
     <Description>Capturas de pantalla locales para Windows, con modo especial para documentación DNET.</Description>
-    <RepositoryUrl>https://github.com/arturo1961/CapturaLibre-DNET</RepositoryUrl>
+    <RepositoryUrl>https://github.com/arturo1961/Capturador-Pantalla-Windows</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <!-- Copia interna del icono: funciona también con PublishSingleFile. -->

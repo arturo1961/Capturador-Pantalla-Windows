@@ -1,8 +1,8 @@
-# 📸 CapturaLibre DNET 2.4.0 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.4.1 — C# / .NET 8
 
 CapturaLibre es un capturador y editor de pantalla **gratis, en español y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.4.0:** compilada y comprobada en Windows con .NET 8. Conservamos `PRUEBAS.md` para validar futuras modificaciones y nuevos equipos.
+> **Versión estable 2.4.1:** corrige la apertura del editor después de las capturas normales y mantiene separado el guardado directo DNET. Conservamos `PRUEBAS.md` para validar futuras modificaciones y nuevos equipos.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -19,7 +19,9 @@ La versión 2.4 incluye un **icono propio** para el EXE, las ventanas y la barra
 - **Abrir un PNG/JPG del disco** para editarlo.
 - Guardar PNG/JPG, guardado rápido en `Imágenes\CapturaLibre`, copiar la imagen o abrir su carpeta.
 - Atajos **F6** para zona, **F7** para todas las pantallas, **F8** para la principal; en el editor **Ctrl+Z**, **Ctrl+S** y **Ctrl+C**.
-- **Modo DNET**: guardado directo en PNG, carpeta seleccionable, nombres correlativos y disparo externo sin cambiar el foco de DNET.
+- **Modo DNET**: guardado directo en PNG mediante el botón dedicado o el disparo externo, carpeta seleccionable y nombres correlativos, sin cambiar el foco de DNET.
+- Los botones normales, incluida **Capturar ventana**, abren siempre el editor para pintar, escribir, recortar y ocultar datos.
+- El botón **?** junto al disparo externo explica dentro del programa la diferencia entre ambos modos.
 
 **Privacidad:** ocultar datos reemplaza por negro los píxeles de la imagen que guardes; no confíes en dibujos semitransparentes para ocultar información sensible. La función «Deshacer» mantiene copias temporales en la memoria hasta cerrar el editor.
 
@@ -29,7 +31,7 @@ La versión 2.4 incluye un **icono propio** para el EXE, las ventanas y la barra
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.4.0-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.4.1-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022
@@ -57,7 +59,7 @@ El resultado del comando `dotnet publish` se guarda en `publicar\CapturaLibre_DN
 
 ## Modo DNET para crear el manual visual
 
-1. Activa **«Modo DNET · guardado directo»**.
+1. Activa **«Activar disparo externo DNET»**.
 2. Pulsa **«Elegir carpeta…»** y selecciona la carpeta `01_CAPTURAS` del manual.
 3. Deja CapturaLibre minimizado y prepara en DNET la pantalla o el menú que quieras documentar.
 4. Para un disparo controlado desde otro programa, crea este archivo:

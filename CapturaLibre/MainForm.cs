@@ -20,7 +20,7 @@ internal sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "CapturaLibre 2.4 — edición DNET";
+        Text = "CapturaLibre 2.4.1 — edición DNET";
         Icon = Program.AppIcon;
         StartPosition = FormStartPosition.CenterScreen;
         Size = new Size(1050, 830);
@@ -196,12 +196,12 @@ internal sealed class MainForm : Form
         dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
         var modoDnet = new CheckBox
         {
-            Text = "Modo DNET · guardado directo",
+            Text = "Activar disparo externo DNET",
             Checked = _settings.DnetMode,
-            AutoSize = false,
-            Dock = DockStyle.Fill,
+            AutoSize = true,
             Font = new Font("Segoe UI", 9.5f),
-            TextAlign = ContentAlignment.MiddleLeft
+            TextAlign = ContentAlignment.MiddleLeft,
+            Margin = new Padding(0, 8, 4, 0)
         };
         modoDnet.CheckedChanged += (_, _) =>
         {
@@ -209,7 +209,31 @@ internal sealed class MainForm : Form
             _settings.Save();
             ActualizarEstadoModoDnet();
         };
-        dnetRow.Controls.Add(modoDnet, 0, 0);
+        var ayudaDnet = NewButton("?", Navy);
+        ayudaDnet.AccessibleName = "Ayuda sobre el disparo externo DNET";
+        ayudaDnet.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
+        ayudaDnet.Size = new Size(36, 30);
+        ayudaDnet.Margin = new Padding(2, 4, 0, 2);
+        ayudaDnet.Click += (_, _) => MessageBox.Show(this,
+            "Hay dos formas de trabajar:\n\n" +
+            "• Capturas normales: los botones Zona, Pantallas, Pantalla principal y " +
+            "Capturar ventana abren siempre el editor para pintar, escribir, recortar u ocultar datos.\n\n" +
+            "• Captura directa DNET: el botón 'Captura DNET en 5 s' y el archivo " +
+            "capturar_dnet.txt guardan el PNG directamente, sin abrir el editor y sin cambiar el foco.\n\n" +
+            "Esta casilla solamente activa o desactiva el disparo externo DNET. No cambia " +
+            "el funcionamiento de los botones normales.",
+            "Ayuda del modo DNET", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        var modoDnetPanel = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            WrapContents = false,
+            FlowDirection = FlowDirection.LeftToRight,
+            Margin = Padding.Empty,
+            Padding = Padding.Empty
+        };
+        modoDnetPanel.Controls.Add(modoDnet);
+        modoDnetPanel.Controls.Add(ayudaDnet);
+        dnetRow.Controls.Add(modoDnetPanel, 0, 0);
         var elegirCarpetaDnet = NewButton("Elegir carpeta…", Navy);
         elegirCarpetaDnet.Font = new Font("Segoe UI", 9f);
         elegirCarpetaDnet.Margin = new Padding(5, 4, 5, 5);
@@ -223,7 +247,7 @@ internal sealed class MainForm : Form
             _settings.DnetMode = true;
             modoDnet.Checked = true;
             _delay.SelectedItem = "5";
-            await CaptureAsync(CaptureMode.PrimaryScreen);
+            await CaptureAsync(CaptureMode.PrimaryScreen, guardarDirectamenteDnet: true);
         };
         dnetRow.Controls.Add(capturaDnet, 2, 0);
         _captureButtons.Add(capturaDnet);
@@ -374,7 +398,7 @@ internal sealed class MainForm : Form
         }
     }
 
-    private async Task CaptureAsync(CaptureMode mode)
+    private async Task CaptureAsync(CaptureMode mode, bool guardarDirectamenteDnet = false)
     {
         if (_busy) return;
         WindowChoice? selected = null;
@@ -445,7 +469,10 @@ internal sealed class MainForm : Form
             return;
         }
         if (shot is null) return;
-        if (_settings.DnetMode)
+        // Los botones normales siempre abren el editor. El guardado directo se usa
+        // solamente desde el botón DNET dedicado; el disparador externo tiene su
+        // propio flujo y tampoco cambia el foco de la ventana documentada.
+        if (guardarDirectamenteDnet)
         {
             try
             {

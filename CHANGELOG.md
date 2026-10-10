@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## 2.4.1 (corrección del editor)
+
+- Los botones normales de captura, incluida **Capturar ventana**, abren siempre la imagen en el editor.
+- El guardado PNG sin editor queda reservado al botón **Captura DNET en 5 s** y al disparo externo DNET.
+- El control del modo DNET se denomina ahora **Activar disparo externo DNET** para evitar confusiones.
+- Se añade un botón de ayuda **?** que explica la diferencia entre captura normal y captura directa DNET.
+
 ## 2.4.0 (versión estable)
 
 - Primera publicación estable de CapturaLibre DNET.

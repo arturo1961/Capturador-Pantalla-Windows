@@ -27,6 +27,6 @@ jobs:
       - name: Guardar ejecutable compilado
         uses: actions/upload-artifact@v4
         with:
-          name: CapturaLibre-DNET-2.4.0-Windows-x64
+          name: CapturaLibre-DNET-2.4.1-Windows-x64
           path: publicar/
           if-no-files-found: error

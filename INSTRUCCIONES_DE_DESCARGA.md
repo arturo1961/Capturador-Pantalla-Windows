@@ -4,8 +4,8 @@
 
 1. Descomprime el ZIP completo.
 2. Ejecuta `CapturaLibre_DNET.exe`.
-3. Activa o desactiva **Modo DNET · guardado directo** según el trabajo que vayas a realizar.
-4. En modo DNET, elige la carpeta de destino antes de comenzar una serie de capturas.
+3. Activa **Activar disparo externo DNET** solamente cuando quieras controlar capturas desde otro programa.
+4. Los botones normales abren siempre el editor; **Captura DNET en 5 s** guarda directamente en la carpeta elegida.
 
 El ejecutable es autónomo para Windows x64 y no necesita instalar .NET 8.
 
