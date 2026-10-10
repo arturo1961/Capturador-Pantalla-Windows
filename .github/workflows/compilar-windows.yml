@@ -1,0 +1,32 @@
+name: Compilar CapturaLibre DNET para Windows
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compilar
+        run: dotnet build CapturaLibre/CapturaLibre.csproj -c Release
+      - name: Publicar EXE x64 independiente de .NET instalado
+        shell: pwsh
+        run: |
+          dotnet publish CapturaLibre/CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar
+      - name: Guardar ejecutable compilado
+        uses: actions/upload-artifact@v4
+        with:
+          name: CapturaLibre-DNET-beta-Windows-x64
+          path: publicar/
+          if-no-files-found: error

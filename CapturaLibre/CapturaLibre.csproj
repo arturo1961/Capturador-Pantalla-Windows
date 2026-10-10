@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Icono de CapturaLibre visible en el EXE, Explorador y barra de tareas. -->
+    <ApplicationIcon>Assets\CapturaLibre.ico</ApplicationIcon>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <AssemblyName>CapturaLibre_DNET</AssemblyName>
+    <RootNamespace>CapturaLibre</RootNamespace>
+    <Version>2.4.0-beta.2</Version>
+    <Authors>arturo1961 y colaboradores de CapturaLibre</Authors>
+    <Description>Capturas de pantalla locales para Windows, con modo especial para documentación DNET.</Description>
+    <RepositoryUrl>https://github.com/arturo1961/CapturaLibre-DNET</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Copia interna del icono: funciona también con PublishSingleFile. -->
+    <EmbeddedResource Include="Assets\CapturaLibre.ico" LogicalName="CapturaLibre.AppIcon.ico" />
+  </ItemGroup>
+</Project>

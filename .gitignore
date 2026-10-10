@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+*.pdb
+publish/
+publicar/
+publicar_dnet/
+ENTREGA_DNET*/
+PUBLICACION_GITHUB*/
+TestResults/
+.DS_Store
+Thumbs.db
+*.zip
