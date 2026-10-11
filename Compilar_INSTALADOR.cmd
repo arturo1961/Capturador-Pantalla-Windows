@@ -1,0 +1,33 @@
+@echo off
+setlocal
+cd /d "%~dp0"
+
+echo Publicando CapturaLibre DNET 2.5.2...
+dotnet publish CapturaLibre\CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar_2.5.2
+if errorlevel 1 goto :error
+
+set "ISCC=%LOCALAPPDATA%\Programs\Inno Setup 7\ISCC.exe"
+if not exist "%ISCC%" set "ISCC=%ProgramFiles%\Inno Setup 7\ISCC.exe"
+if not exist "%ISCC%" set "ISCC=%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe"
+
+if not exist "%ISCC%" (
+  echo No se encontro Inno Setup 6 o 7.
+  echo Descargalo desde https://jrsoftware.org/isdl.php
+  pause
+  exit /b 2
+)
+
+echo Creando el instalador...
+"%ISCC%" Instalador\CapturaLibre_DNET.iss
+if errorlevel 1 goto :error
+
+echo.
+echo Instalador terminado en instalador_2.5.2\Instalar_CapturaLibre_DNET_2.5.2.exe
+pause
+exit /b 0
+
+:error
+echo.
+echo No se pudo crear el instalador.
+pause
+exit /b 1

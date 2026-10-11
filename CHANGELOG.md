@@ -1,5 +1,14 @@
 # Historial de versiones
 
+## 2.5.2 (instalador para Windows)
+
+- Nuevo instalador profesional `Instalar_CapturaLibre_DNET_2.5.2.exe`.
+- Instalación por usuario, sin solicitar privilegios de administrador.
+- Acceso en el menú Inicio, acceso directo opcional en el escritorio y desinstalador de Windows.
+- Asistente disponible en Español, English, Français, Deutsch, Italiano y Português.
+- Se conserva `CapturaLibre_DNET.exe` como edición portátil.
+- No cambia el funcionamiento de CapturaLibre respecto a la versión 2.5.1.
+
 ## 2.5.1 (ajuste automático DNET)
 
 - Nueva opción para ajustar automáticamente la captura al contenido útil de DNET.

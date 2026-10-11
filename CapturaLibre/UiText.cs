@@ -22,7 +22,7 @@ internal static class UiText
         ["es"] = new()
         {
             ["Brand"] = "CapturaLibre",
-            ["Main.Title"] = "CapturaLibre 2.5.1 - edición DNET",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - edición DNET",
             ["Main.Tagline"] = "Capturas útiles, privadas y sin complicaciones.",
             ["Main.Heading"] = "¿Qué deseas capturar?",
             ["Main.Language"] = "Idioma:",
@@ -81,7 +81,7 @@ internal static class UiText
         },
         ["en"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.1 - DNET edition",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - DNET edition",
             ["Main.Tagline"] = "Useful, private screenshots without complications.",
             ["Main.Heading"] = "What would you like to capture?",
             ["Main.Language"] = "Language:",
@@ -130,7 +130,7 @@ internal static class UiText
         },
         ["fr"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.1 - édition DNET", ["Main.Tagline"] = "Des captures utiles, privées et sans complications.",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - édition DNET", ["Main.Tagline"] = "Des captures utiles, privées et sans complications.",
             ["Main.Heading"] = "Que souhaitez-vous capturer ?", ["Main.Language"] = "Langue :",
             ["Capture.Region"] = "Sélectionner une zone à la souris   [F6]", ["Capture.All"] = "Tous les écrans   [F7]",
             ["Capture.Primary"] = "Écran principal   [F8]", ["Capture.WindowSection"] = "Capturer une fenêtre précise",
@@ -171,7 +171,7 @@ internal static class UiText
         },
         ["de"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.1 - DNET-Ausgabe", ["Main.Tagline"] = "Nützliche, private Bildschirmfotos ohne Umstände.",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - DNET-Ausgabe", ["Main.Tagline"] = "Nützliche, private Bildschirmfotos ohne Umstände.",
             ["Main.Heading"] = "Was möchten Sie aufnehmen?", ["Main.Language"] = "Sprache:",
             ["Capture.Region"] = "Bereich mit der Maus auswählen   [F6]", ["Capture.All"] = "Alle Bildschirme   [F7]",
             ["Capture.Primary"] = "Hauptbildschirm   [F8]", ["Capture.WindowSection"] = "Bestimmtes Fenster aufnehmen",
@@ -212,7 +212,7 @@ internal static class UiText
         },
         ["it"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.1 - edizione DNET", ["Main.Tagline"] = "Catture utili, private e senza complicazioni.",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - edizione DNET", ["Main.Tagline"] = "Catture utili, private e senza complicazioni.",
             ["Main.Heading"] = "Cosa desideri catturare?", ["Main.Language"] = "Lingua:",
             ["Capture.Region"] = "Seleziona un'area con il mouse   [F6]", ["Capture.All"] = "Tutti gli schermi   [F7]",
             ["Capture.Primary"] = "Schermo principale   [F8]", ["Capture.WindowSection"] = "Cattura una finestra specifica",
@@ -253,7 +253,7 @@ internal static class UiText
         },
         ["pt"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.1 - edição DNET", ["Main.Tagline"] = "Capturas úteis, privadas e sem complicações.",
+            ["Main.Title"] = "CapturaLibre 2.5.2 - edição DNET", ["Main.Tagline"] = "Capturas úteis, privadas e sem complicações.",
             ["Main.Heading"] = "O que deseja capturar?", ["Main.Language"] = "Idioma:",
             ["Capture.Region"] = "Selecionar área com o rato   [F6]", ["Capture.All"] = "Todos os ecrãs   [F7]",
             ["Capture.Primary"] = "Ecrã principal   [F8]", ["Capture.WindowSection"] = "Capturar uma janela específica",
