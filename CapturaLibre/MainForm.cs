@@ -24,7 +24,7 @@ internal sealed class MainForm : Form
     {
         UiText.SetLanguage(_settings.Language);
         ApplyLanguageDirection();
-        Text = UiText.Get("Main.Title");
+        Text = VersionedWindowTitle();
         Icon = Program.AppIcon;
         StartPosition = FormStartPosition.CenterScreen;
         Size = new Size(1050, 830);
@@ -387,6 +387,20 @@ internal sealed class MainForm : Form
         UseVisualStyleBackColor = false
     };
 
+    private static string VersionedWindowTitle()
+    {
+        Version? assemblyVersion = typeof(MainForm).Assembly.GetName().Version;
+        string version = assemblyVersion is null
+            ? "2.6.0"
+            : $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{Math.Max(assemblyVersion.Build, 0)}";
+
+        // Conserva la traducción del título, pero la versión siempre procede
+        // del ejecutable. Así, un paquete de idioma antiguo no puede mostrar
+        // por error una versión distinta a la instalada.
+        return System.Text.RegularExpressions.Regex.Replace(
+            UiText.Get("Main.Title"), @"\d+\.\d+\.\d+", version);
+    }
+
     private void ChangeLanguage()
     {
         if (_language.SelectedItem is not LanguageOption option) return;
@@ -394,7 +408,7 @@ internal sealed class MainForm : Form
         ApplyLanguageDirection();
         _settings.Language = option.Code;
         _settings.Save();
-        Text = UiText.Get("Main.Title");
+        Text = VersionedWindowTitle();
         UiText.Apply(this);
         RefreshPresetItems();
         _status.Text = UiText.Get("Main.Ready");
