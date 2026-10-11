@@ -6,6 +6,7 @@
 - Elimina grandes márgenes vacíos a la derecha y debajo del contenido, conservando un margen de seguridad.
 - La captura directa evita incluir la barra de tareas cuando el ajuste está activado.
 - La preferencia se guarda y está disponible en los seis idiomas de la interfaz.
+- Por privacidad, la interfaz no muestra la ruta personal: cada usuario elige la carpeta con el botón correspondiente y la ubicación queda guardada únicamente en su configuración local.
 
 ## 2.5.0 (interfaz multilingüe)
 

@@ -32,6 +32,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 - Atajos **F6** para zona, **F7** para todas las pantallas, **F8** para la principal; en el editor **Ctrl+Z**, **Ctrl+S** y **Ctrl+C**.
 - **Modo DNET**: guardado directo en PNG mediante el botón dedicado o el disparo externo, carpeta seleccionable y nombres correlativos, sin cambiar el foco de DNET.
 - **Ajuste automático DNET**: elimina el espacio vacío situado a la derecha y debajo del contenido, conserva la zona útil con un margen de seguridad y evita incluir la barra de tareas.
+- **Privacidad de la carpeta**: cada usuario elige dónde guardar las imágenes; la interfaz no muestra la ruta personal completa y la ubicación queda únicamente en la configuración local.
 - Los botones normales, incluida **Capturar ventana**, abren siempre el editor para pintar, escribir, recortar y ocultar datos.
 - El botón **?** junto al disparo externo explica dentro del programa la diferencia entre ambos modos.
 

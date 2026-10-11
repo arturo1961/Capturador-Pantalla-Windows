@@ -623,7 +623,7 @@ internal sealed class MainForm : Form
 
     private void ActualizarEstadoModoDnet()
     {
-        _dnetFolderLabel.Text = string.Format(UiText.Get("Dnet.Folder"), CarpetaDnet);
+        _dnetFolderLabel.Text = UiText.Get("Dnet.Folder");
         _dnetFolderLabel.ForeColor = _settings.DnetMode ? Navy : Color.DimGray;
     }
 
