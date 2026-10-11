@@ -14,7 +14,14 @@ internal static class UiText
         new("fr", "Français"),
         new("de", "Deutsch"),
         new("it", "Italiano"),
-        new("pt", "Português")
+        new("pt", "Português"),
+        new("nl", "Nederlands"),
+        new("pl", "Polski"),
+        new("ro", "Română"),
+        new("ru", "Русский"),
+        new("zh-Hans", "简体中文"),
+        new("ja", "日本語"),
+        new("hi", "हिन्दी")
     ];
 
     private static readonly Dictionary<string, Dictionary<string, string>> Texts = new()
@@ -291,7 +298,14 @@ internal static class UiText
             ["Editor.Ready"] = "Arraste para anotar; clique para adicionar texto. Ctrl+Z: desfazer - Ctrl+S: guardar - Ctrl+C: copiar.",
             ["Dialog.AddText"] = "Adicionar texto à captura", ["Dialog.TextPrompt"] = "Texto a escrever na imagem:",
             ["Dialog.OK"] = "Aceitar", ["Dialog.Cancel"] = "Cancelar", ["Selection.Title"] = "Selecionar área - Esc para cancelar"
-        }
+        },
+        ["nl"] = AdditionalTranslations.Create("nl"),
+        ["pl"] = AdditionalTranslations.Create("pl"),
+        ["ro"] = AdditionalTranslations.Create("ro"),
+        ["ru"] = AdditionalTranslations.Create("ru"),
+        ["zh-Hans"] = AdditionalTranslations.Create("zh-Hans"),
+        ["ja"] = AdditionalTranslations.Create("ja"),
+        ["hi"] = AdditionalTranslations.Create("hi")
     };
 
     public static string CurrentLanguage { get; private set; } = "es";
@@ -302,6 +316,7 @@ internal static class UiText
     public static string Get(string key)
     {
         if (Texts[CurrentLanguage].TryGetValue(key, out string? value)) return value;
+        if (CurrentLanguage != "en" && Texts["en"].TryGetValue(key, out value)) return value;
         return Texts["es"].TryGetValue(key, out value) ? value : key;
     }
 

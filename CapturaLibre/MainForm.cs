@@ -334,7 +334,7 @@ internal sealed class MainForm : Form
         };
     }
 
-    private static Button NewButton(string textKey, Color bg, bool localize = true) => new()
+    private static Button NewButton(string textKey, Color bg, bool localize = true) => new AutoFitButton
     {
         Name = localize ? "i18n:" + textKey : string.Empty,
         Text = localize ? UiText.Get(textKey) : textKey,

@@ -16,6 +16,15 @@ El mismo ejecutable permite cambiar el idioma desde el selector situado en la es
 - Deutsch
 - Italiano
 - Português
+- Nederlands
+- Polski
+- Română
+- Русский
+- 简体中文
+- 日本語
+- हिन्दी
+
+Los botones ajustan automáticamente el tamaño de sus textos para que las traducciones largas no queden cortadas.
 
 La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barra de tareas. Los archivos PNG e ICO están en `CapturaLibre/Assets/`. También conserva el botón **«Más colores…»** en el editor, con paletas de colores vivos, pastel, oscuros y neutros y un selector para elegir cualquier color personalizado.
 
