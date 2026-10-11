@@ -24,6 +24,10 @@ if ($sourceTexts.Count -lt 60) { throw "Solo se encontraron $($sourceTexts.Count
 $languages = @(
     @{ Code='ca'; Target='ca'; Name='Català'; Order=10 },
     @{ Code='val'; Target='ca'; Name='Valencià'; Order=11 },
+    @{ Code='fr'; Target='fr'; Name='Français'; Order=2 },
+    @{ Code='de'; Target='de'; Name='Deutsch'; Order=3 },
+    @{ Code='it'; Target='it'; Name='Italiano'; Order=4 },
+    @{ Code='pt'; Target='pt'; Name='Português'; Order=5 },
     @{ Code='gl'; Target='gl'; Name='Galego'; Order=12 },
     @{ Code='eu'; Target='eu'; Name='Euskara'; Order=13 },
     @{ Code='oc-ES'; Target='oc'; Name='Aranés / Occitan'; Order=14 },
@@ -33,7 +37,7 @@ $languages = @(
     @{ Code='ru'; Target='ru'; Name='Русский'; Order=103 },
     @{ Code='da'; Target='da'; Name='Dansk'; Order=104 },
     @{ Code='sv'; Target='sv'; Name='Svenska'; Order=105 },
-    @{ Code='no'; Target='no'; Name='Norsk'; Order=106 },
+    @{ Code='no'; Target='nb'; Name='Norsk'; Order=106 },
     @{ Code='fi'; Target='fi'; Name='Suomi'; Order=107 },
     @{ Code='is'; Target='is'; Name='Íslenska'; Order=108 },
     @{ Code='cs'; Target='cs'; Name='Čeština'; Order=109 },
@@ -140,16 +144,66 @@ function Normalize-Texts($texts) {
         $texts['Dnet.Trigger'] = $trigger.Substring(0, $pathStart) +
             '%LOCALAPPDATA%\CapturaLibre_DNET\capturar_dnet.txt'
     }
+    $patternHelp = [string]$texts['Preferences.PatternHelp']
+    if (-not [string]::IsNullOrWhiteSpace($patternHelp)) {
+        $expectedTokens = @('{fecha}', '{hora}', '{contador}', '{ventana}')
+        $matches = @([regex]::Matches($patternHelp, '\{[^}]+\}'))
+        for ($index = [Math]::Min($matches.Count, $expectedTokens.Count) - 1; $index -ge 0; $index--) {
+            $match = $matches[$index]
+            $patternHelp = $patternHelp.Remove($match.Index, $match.Length).Insert($match.Index, $expectedTokens[$index])
+        }
+        # La carpeta predeterminada ya se muestra en la propia interfaz. Se
+        # conserva aquí solo la explicación de los cuatro marcadores para que
+        # ningún traductor altere el nombre CapturaLibre ni una ruta de Windows.
+        $lastToken = $patternHelp.IndexOf('{ventana}', [StringComparison]::Ordinal)
+        if ($lastToken -ge 0) {
+            $sentenceEnd = $patternHelp.IndexOfAny(@([char]'.', [char]'。', [char]'؟', [char]'।'), $lastToken)
+            if ($sentenceEnd -ge 0) { $patternHelp = $patternHelp.Substring(0, $sentenceEnd + 1) }
+        }
+        $texts['Preferences.PatternHelp'] = $patternHelp.Trim()
+    }
 }
 
 foreach ($language in $languages) {
     $path = Join-Path $outputFolder ($language.Code + '.json')
     if (Test-Path -LiteralPath $path) {
         $existingPack = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json -AsHashtable
+        $missingEntries = @($sourceTexts.GetEnumerator() | Where-Object {
+            -not $existingPack.texts.ContainsKey($_.Key)
+        })
+        if ($missingEntries.Count -gt 0) {
+            Write-Host "Completando $($language.Name) [$($language.Code)]: $($missingEntries.Count) textos nuevos..."
+            $offset = 0
+            while ($offset -lt $missingEntries.Count) {
+                $batch = @()
+                $characters = 0
+                while (($offset + $batch.Count) -lt $missingEntries.Count -and $batch.Count -lt 8) {
+                    $candidate = $missingEntries[$offset + $batch.Count]
+                    if ($batch.Count -gt 0 -and ($characters + $candidate.Value.Length) -gt 750) { break }
+                    $batch += $candidate
+                    $characters += $candidate.Value.Length
+                }
+                $separator = "`nZXQSEPZXQ`n"
+                $joined = ($batch | ForEach-Object { $_.Value }) -join $separator
+                $result = Invoke-Translation $joined $language.Target
+                $parts = @($result -split 'ZXQSEPZXQ')
+                if ($parts.Count -ne $batch.Count) {
+                    foreach ($item in $batch) {
+                        $existingPack.texts[$item.Key] = Invoke-Translation $item.Value $language.Target
+                    }
+                }
+                else {
+                    for ($index = 0; $index -lt $batch.Count; $index++) {
+                        $existingPack.texts[$batch[$index].Key] = $parts[$index].Trim("`r", "`n")
+                    }
+                }
+                $offset += $batch.Count
+            }
+        }
         Normalize-Texts $existingPack.texts
         $existingJson = $existingPack | ConvertTo-Json -Depth 6
         [System.IO.File]::WriteAllText($path, $existingJson, [System.Text.UTF8Encoding]::new($false))
-        Write-Host "Conservando $($language.Name) [$($language.Code)] ya generado."
+        Write-Host "Conservando $($language.Name) [$($language.Code)] ya generado y completo."
         continue
     }
     Write-Host "Generando $($language.Name) [$($language.Code)]..."

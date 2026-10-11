@@ -13,11 +13,21 @@ Registra versión de Windows, resolución/escalado de cada pantalla y el resulta
 - [ ] Al desmarcar «Minimizar otras ventanas al iniciar», el ajuste se conserva después de reiniciar.
 - [ ] Escogiendo ventana en el desplegable y pulsando «Capturar ventana» se obtiene una imagen útil; actualizar lista incorpora ventanas recién abiertas.
 - [ ] Seleccionar una zona funciona y Esc/clic derecho cancelan.
+- [ ] La selección de zona muestra lupa, punto de mira, coordenadas y tamaño en píxeles.
 - [ ] Capturas con F6/F7/F8 y los botones de pantalla/zona funcionan.
 - [ ] Retardos de 0, 3, 5 y 10 segundos funcionan.
 - [ ] Se capturan monitores múltiples, incluso uno situado a la izquierda del principal.
 - [ ] La ventana de CapturaLibre no aparece en sus propias capturas.
 - [ ] Puedes dibujar flechas, figuras, texto y lápiz; cambiar grosor y color.
+- [ ] Paso numerado crea 1, 2, 3... automáticamente.
+- [ ] Pixelar y Desenfocar transforman realmente la zona elegida.
+- [ ] El texto permite cambiar tamaño, negrita y fondo.
+- [ ] Mover último permite recolocar la anotación más reciente sin perder la imagen original.
+- [ ] Los perfiles Documentación y Privacidad abren el editor con la herramienta adecuada.
+- [ ] El patrón de nombre admite {fecha}, {hora}, {contador} y {ventana}.
+- [ ] El historial local muestra miniaturas y permite reabrir una captura con doble clic.
+- [ ] El selector de ventanas muestra miniaturas cuando están activadas en Preferencias.
+- [ ] `Tools\ValidateLanguagePacks.ps1` termina sin errores estructurales.
 - [ ] Redimensionar el editor hasta su ancho mínimo sigue mostrando TODOS los botones, grosor, los 4 colores, «Más colores…» y la vista previa; las barras se adaptan en varias filas, sin desplazamiento horizontal.
 - [ ] «Más colores…» despliega cuatro familias de colores con seis tonos cada una.
 - [ ] Seleccionar un tono cambia el color de flechas, textos, figuras y lápiz; el cuadro de vista previa refleja el elegido.

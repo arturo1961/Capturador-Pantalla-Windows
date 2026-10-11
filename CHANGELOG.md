@@ -1,7 +1,23 @@
 # Historial de versiones
 
+## 2.6.0 (captura y edición avanzada)
+
+- Lupa con coordenadas y punto de mira al seleccionar una zona.
+- Pasos numerados automáticos para tutoriales.
+- Pixelado y desenfoque para ocultar información privada.
+- Texto enriquecido con tamaño, negrita y fondo opcional.
+- Movimiento de la última anotación para corregir su posición.
+- Perfiles Manual, Documentación, Privacidad y Rápida.
+- Nombres automáticos configurables con fecha, hora, contador y ventana.
+- Historial local de capturas recientes, sin enviar datos a internet.
+- Miniaturas al elegir una ventana concreta.
+- Herramienta de validación y lista visual para revisar los idiomas antes de publicar.
+- Las funciones nuevas, preferencias, historial, mensajes de estado y errores quedan traducidos en los 61 idiomas; ningún paquete depende del inglés como sustituto.
+- El validador impide compilar una revisión de idiomas incompleta o con marcadores internos alterados.
+
 ## 2.5.3 (61 idiomas y paquetes ampliables)
 
+- Se revisa la traducción catalana: «Actualitzar llista» y «Desar com a...».
 - La interfaz conserva la misma distribución en los idiomas de derecha a izquierda; el texto mantiene su escritura natural sin invertir la cabecera ni las columnas.
 - Un único ejecutable permite elegir entre 61 idiomas.
 - Se incluyen español, catalán, valenciano, gallego, euskera y aranés/occitano.

@@ -10,6 +10,7 @@ internal sealed class MainForm : Form
     private readonly ComboBox _windowList = new();
     private readonly Label _status = new();
     private readonly ComboBox _language = new();
+    private readonly ComboBox _preset = new();
     private readonly List<Button> _captureButtons = new();
     private readonly System.Windows.Forms.Timer _dnetTriggerTimer = new() { Interval = 350 };
     private readonly Label _dnetFolderLabel = new();
@@ -129,6 +130,10 @@ internal sealed class MainForm : Form
         }, "Capture.WindowSection");
         Place(windowRow, windowTitle, 0, 0, 3);
         _windowList.DropDownStyle = ComboBoxStyle.DropDownList;
+        _windowList.DrawMode = DrawMode.OwnerDrawFixed;
+        _windowList.ItemHeight = 52;
+        _windowList.DropDownHeight = 420;
+        _windowList.DrawItem += DrawWindowItem;
         _windowList.Dock = DockStyle.Fill;
         _windowList.Margin = new Padding(0, 6, 5, 8);
         windowRow.Controls.Add(_windowList, 0, 1);
@@ -164,13 +169,32 @@ internal sealed class MainForm : Form
         {
             AutoSize = true, Padding = new Padding(6, 7, 0, 0)
         }, "Capture.Seconds"));
+        delayRow.Controls.Add(UiText.Bind(new Label
+        {
+            AutoSize = true, Padding = new Padding(24, 7, 0, 0)
+        }, "Main.Preset"));
+        _preset.DropDownStyle = ComboBoxStyle.DropDownList;
+        _preset.Width = 185;
+        RefreshPresetItems();
+        _preset.SelectedIndexChanged += (_, _) =>
+        {
+            _settings.CapturePreset = _preset.SelectedIndex switch
+            {
+                1 => "Documentación",
+                2 => "Privacidad",
+                3 => "Rápida",
+                _ => "Manual"
+            };
+            _settings.Save();
+        };
+        delayRow.Controls.Add(_preset);
         Place(content, delayRow, 0, 4, 2);
 
         Button restore = NewButton("Main.Restore", Navy);
         restore.Click += (_, _) =>
         {
             int count = _windows.RestoreOthers();
-            _status.Text = $"Ventanas restauradas: {count}.";
+            _status.Text = string.Format(UiText.Get("Status.WindowsRestored"), count);
         };
         Place(content, restore, 0, 5, 1);
 
@@ -181,12 +205,14 @@ internal sealed class MainForm : Form
         var settingsRow = new TableLayoutPanel
         {
             Dock = DockStyle.Fill,
-            ColumnCount = 2,
+            ColumnCount = 4,
             RowCount = 1,
             Padding = new Padding(3, 6, 0, 3)
         };
-        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
-        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49));
+        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17));
+        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17));
+        settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17));
         var minimizeAtStart = UiText.Bind(new CheckBox
         {
             Checked = _settings.MinimizeOnStart,
@@ -206,6 +232,16 @@ internal sealed class MainForm : Form
         openImage.Margin = new Padding(5, 3, 5, 5);
         openImage.Click += (_, _) => OpenImage();
         settingsRow.Controls.Add(openImage, 1, 0);
+        var history = NewButton("Main.History", Navy);
+        history.Font = new Font("Segoe UI", 9.5f);
+        history.Margin = new Padding(5, 3, 5, 5);
+        history.Click += (_, _) => OpenHistory();
+        settingsRow.Controls.Add(history, 2, 0);
+        var preferences = NewButton("Main.Preferences", Navy);
+        preferences.Font = new Font("Segoe UI", 9.5f);
+        preferences.Margin = new Padding(5, 3, 5, 5);
+        preferences.Click += (_, _) => ShowPreferences();
+        settingsRow.Controls.Add(preferences, 3, 0);
         Place(content, settingsRow, 0, 6, 2);
 
         var dnetRow = new TableLayoutPanel
@@ -333,6 +369,7 @@ internal sealed class MainForm : Form
         {
             _dnetTriggerTimer.Stop();
             _windows.RestoreOthers();
+            DisposeWindowChoices();
         };
     }
 
@@ -359,6 +396,7 @@ internal sealed class MainForm : Form
         _settings.Save();
         Text = UiText.Get("Main.Title");
         UiText.Apply(this);
+        RefreshPresetItems();
         _status.Text = UiText.Get("Main.Ready");
         ActualizarEstadoModoDnet();
     }
@@ -372,6 +410,118 @@ internal sealed class MainForm : Form
         // sitio y podía cortar la marca CapturaLibre.
         RightToLeft = RightToLeft.No;
         RightToLeftLayout = false;
+    }
+
+    private void RefreshPresetItems()
+    {
+        int selected = _settings.CapturePreset switch
+        {
+            "Documentación" => 1,
+            "Privacidad" => 2,
+            "Rápida" => 3,
+            _ => 0
+        };
+        _preset.BeginUpdate();
+        _preset.Items.Clear();
+        _preset.Items.AddRange([
+            UiText.Get("Preset.Manual"),
+            UiText.Get("Preset.Documentation"),
+            UiText.Get("Preset.Privacy"),
+            UiText.Get("Preset.Quick")
+        ]);
+        _preset.SelectedIndex = selected;
+        _preset.EndUpdate();
+    }
+
+    private void OpenHistory()
+    {
+        using var history = new HistoryForm(_settings);
+        history.ShowDialog(this);
+    }
+
+    private void ShowPreferences()
+    {
+        using var dialog = new Form
+        {
+            Text = UiText.Get("Preferences.Title"), Icon = Program.AppIcon,
+            StartPosition = FormStartPosition.CenterParent,
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            ClientSize = new Size(720, 390), MinimizeBox = false, MaximizeBox = false,
+            ShowInTaskbar = false, Font = new Font("Segoe UI", 10.5f),
+            BackColor = Color.White
+        };
+        var grid = new TableLayoutPanel
+        {
+            Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 6,
+            Padding = new Padding(22), BackColor = Color.White
+        };
+        grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 190));
+        grid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130));
+        grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+        grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 54));
+        grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 55));
+        grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+        grid.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+
+        var pattern = new TextBox { Dock = DockStyle.Fill, Text = _settings.CaptureNamePattern };
+        var folder = new TextBox { Dock = DockStyle.Fill, Text = _settings.QuickSaveFolder };
+        var choose = new Button { Text = UiText.Get("Dnet.ChooseFolder"), Dock = DockStyle.Fill };
+        choose.Click += (_, _) =>
+        {
+            using var browser = new FolderBrowserDialog
+            {
+                Description = UiText.Get("Preferences.FolderHelp"),
+                SelectedPath = Directory.Exists(folder.Text) ? folder.Text : string.Empty,
+                UseDescriptionForTitle = true
+            };
+            if (browser.ShowDialog(dialog) == DialogResult.OK) folder.Text = browser.SelectedPath;
+        };
+        var historyLimit = new NumericUpDown
+        {
+            Minimum = 5, Maximum = 100, Value = Math.Clamp(_settings.HistoryLimit, 5, 100),
+            Width = 90, Dock = DockStyle.Left
+        };
+        var thumbnails = new CheckBox
+        {
+            Text = UiText.Get("Preferences.Thumbnails"), Checked = _settings.WindowThumbnails,
+            AutoSize = true, Dock = DockStyle.Fill
+        };
+        var help = new Label
+        {
+            Text = UiText.Get("Preferences.PatternHelp"), Dock = DockStyle.Fill,
+            ForeColor = Color.FromArgb(75, 88, 105), AutoSize = false
+        };
+        var accept = new Button
+        {
+            Text = UiText.Get("Dialog.OK"), DialogResult = DialogResult.OK,
+            Dock = DockStyle.Fill, BackColor = Blue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat
+        };
+        var cancel = new Button
+        {
+            Text = UiText.Get("Dialog.Cancel"), DialogResult = DialogResult.Cancel,
+            Dock = DockStyle.Fill, BackColor = Navy, ForeColor = Color.White, FlatStyle = FlatStyle.Flat
+        };
+        grid.Controls.Add(new Label { Text = UiText.Get("Preferences.Pattern"), Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 0);
+        grid.Controls.Add(pattern, 1, 0); grid.SetColumnSpan(pattern, 2);
+        grid.Controls.Add(new Label { Text = UiText.Get("Preferences.Folder"), Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 1);
+        grid.Controls.Add(folder, 1, 1); grid.Controls.Add(choose, 2, 1);
+        grid.Controls.Add(new Label { Text = UiText.Get("Preferences.HistoryLimit"), Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 2);
+        grid.Controls.Add(historyLimit, 1, 2);
+        grid.Controls.Add(thumbnails, 0, 3); grid.SetColumnSpan(thumbnails, 3);
+        grid.Controls.Add(help, 0, 4); grid.SetColumnSpan(help, 3);
+        grid.Controls.Add(cancel, 1, 5); grid.Controls.Add(accept, 2, 5);
+        dialog.Controls.Add(grid);
+        dialog.AcceptButton = accept;
+        dialog.CancelButton = cancel;
+        if (dialog.ShowDialog(this) != DialogResult.OK) return;
+        _settings.CaptureNamePattern = pattern.Text.Trim();
+        _settings.QuickSaveFolder = folder.Text.Trim();
+        _settings.HistoryLimit = (int)historyLimit.Value;
+        _settings.WindowThumbnails = thumbnails.Checked;
+        _settings.Save();
+        RefreshWindows();
     }
 
     private void ShowDnetHelp()
@@ -437,8 +587,10 @@ internal sealed class MainForm : Form
         _windowList.BeginUpdate();
         try
         {
+            DisposeWindowChoices();
             _windowList.Items.Clear();
-            foreach (var window in _windows.ListWindows()) _windowList.Items.Add(window);
+            foreach (var window in _windows.ListWindows(_settings.WindowThumbnails))
+                _windowList.Items.Add(window);
             if (_windowList.Items.Count > 0)
             {
                 int index = 0;
@@ -452,16 +604,44 @@ internal sealed class MainForm : Form
         finally { _windowList.EndUpdate(); }
     }
 
+    private void DisposeWindowChoices()
+    {
+        foreach (WindowChoice choice in _windowList.Items.OfType<WindowChoice>()) choice.Dispose();
+    }
+
+    private void DrawWindowItem(object? sender, DrawItemEventArgs e)
+    {
+        e.DrawBackground();
+        if (e.Index < 0 || e.Index >= _windowList.Items.Count) return;
+        if (_windowList.Items[e.Index] is not WindowChoice choice) return;
+        Rectangle bounds = e.Bounds;
+        int textLeft = bounds.Left + 8;
+        if (choice.Thumbnail is not null)
+        {
+            var preview = new Rectangle(bounds.Left + 4, bounds.Top + 3, 78, Math.Max(10, bounds.Height - 6));
+            e.Graphics.DrawImage(choice.Thumbnail, preview);
+            textLeft = preview.Right + 10;
+        }
+        Color textColor = (e.State & DrawItemState.Selected) != 0
+            ? SystemColors.HighlightText
+            : SystemColors.ControlText;
+        TextRenderer.DrawText(e.Graphics, choice.ToString(), _windowList.Font,
+            new Rectangle(textLeft, bounds.Top, Math.Max(1, bounds.Right - textLeft - 4), bounds.Height),
+            textColor, TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis |
+                       TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix);
+        e.DrawFocusRectangle();
+    }
+
     private void MinimizeOtherWindows()
     {
         try
         {
             int count = _windows.MinimizeOthers();
-            _status.Text = $"Ventanas minimizadas: {count}. Pulsa «Restaurar ventanas» para recuperarlas.";
+            _status.Text = string.Format(UiText.Get("Status.WindowsMinimized"), count);
         }
         catch (Exception ex)
         {
-            _status.Text = "No se pudieron minimizar algunas ventanas: " + ex.Message;
+            _status.Text = UiText.Get("Error.MinimizeWindows") + " " + ex.Message;
         }
     }
 
@@ -486,19 +666,19 @@ internal sealed class MainForm : Form
         if (_busy) return;
         using var file = new OpenFileDialog
         {
-            Title = "Abrir imagen para editar",
-            Filter = "Imágenes PNG y JPEG|*.png;*.jpg;*.jpeg|Todas las imágenes|*.bmp;*.gif;*.png;*.jpg;*.jpeg"
+            Title = UiText.Get("Dialog.OpenImageTitle"),
+            Filter = UiText.Get("Dialog.ImageFilter")
         };
         if (file.ShowDialog(this) != DialogResult.OK) return;
         try
         {
             using var original = new Bitmap(file.FileName);
-            using var editor = new EditorForm(new Bitmap(original));
+            using var editor = new EditorForm(new Bitmap(original), _settings);
             editor.ShowDialog(this);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "No se pudo abrir la imagen:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.OpenImage") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -512,7 +692,7 @@ internal sealed class MainForm : Form
             selected = _windowList.SelectedItem as WindowChoice;
             if (selected is null)
             {
-                MessageBox.Show(this, "Selecciona una ventana y pulsa Capturar ventana.",
+                MessageBox.Show(this, UiText.Get("Prompt.SelectWindow"),
                     "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -528,7 +708,7 @@ internal sealed class MainForm : Form
             Hide();
             if (seconds > 0)
             {
-                _status.Text = $"Captura en {seconds} segundos…";
+                _status.Text = string.Format(UiText.Get("Status.Countdown"), seconds);
                 await Task.Delay(TimeSpan.FromSeconds(seconds));
             }
             await Task.Delay(250); // Quitar nuestra ventana de los píxeles capturados.
@@ -565,17 +745,18 @@ internal sealed class MainForm : Form
             Show();
             Activate();
             foreach (var button in _captureButtons) button.Enabled = true;
-            _status.Text = "Listo para capturar.";
+            _status.Text = UiText.Get("Main.Ready");
             _busy = false;
         }
 
         if (captureError is not null)
         {
-            MessageBox.Show(this, "No se pudo realizar la captura:\n" + captureError,
+            MessageBox.Show(this, UiText.Get("Error.Capture") + "\n" + captureError,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
         if (shot is null) return;
+        CaptureHistory.Add(shot, _settings.HistoryLimit);
         // Los botones normales siempre abren el editor. El guardado directo se usa
         // solamente desde el botón DNET dedicado; el disparador externo tiene su
         // propio flujo y tampoco cambia el foco de la ventana documentada.
@@ -590,12 +771,12 @@ internal sealed class MainForm : Form
                     shot = recortada;
                 }
                 string ruta = GuardarCapturaDnet(shot, null);
-                _status.Text = "Captura DNET guardada en: " + ruta;
+                _status.Text = string.Format(UiText.Get("Status.DnetSaved"), ruta);
                 System.Media.SystemSounds.Asterisk.Play();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "No se pudo guardar la captura DNET:\n" + ex.Message,
+                MessageBox.Show(this, UiText.Get("Error.DnetSave") + "\n" + ex.Message,
                     "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -604,18 +785,47 @@ internal sealed class MainForm : Form
             }
             return;
         }
+        if (_settings.CapturePreset == "Rápida")
+        {
+            try
+            {
+                string folder = GetQuickSaveFolder();
+                Directory.CreateDirectory(folder);
+                string path = Path.Combine(folder, _settings.NextCaptureFileName(selected?.Title));
+                shot.Save(path, System.Drawing.Imaging.ImageFormat.Png);
+                _status.Text = string.Format(UiText.Get("Status.QuickSaved"), path);
+                System.Media.SystemSounds.Asterisk.Play();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, UiText.Get("Error.QuickSave") + "\n" + ex.Message,
+                    "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { shot.Dispose(); }
+            return;
+        }
         try
         {
-            using var editor = new EditorForm(shot);
+            using var editor = new EditorForm(shot, _settings);
             shot = null; // A partir de aquí el editor se encarga del Bitmap.
             editor.ShowDialog(this);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "No se pudo abrir el editor:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.OpenEditor") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         finally { shot?.Dispose(); }
+    }
+
+    private string GetQuickSaveFolder()
+    {
+        if (!string.IsNullOrWhiteSpace(_settings.QuickSaveFolder))
+            return _settings.QuickSaveFolder;
+        string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        if (string.IsNullOrWhiteSpace(pictures))
+            pictures = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        return Path.Combine(pictures, "CapturaLibre");
     }
 
     private static string DnetTriggerPath => Path.Combine(
@@ -669,7 +879,7 @@ internal sealed class MainForm : Form
         }
         catch (Exception ex)
         {
-            _status.Text = "No se pudo procesar el disparo DNET: " + ex.Message;
+            _status.Text = UiText.Get("Error.DnetTrigger") + " " + ex.Message;
         }
         finally
         {
@@ -698,7 +908,7 @@ internal sealed class MainForm : Form
                 captura = recortada;
             }
             string ruta = GuardarCapturaDnet(captura, nombreSolicitado);
-            _status.Text = "Captura DNET guardada en: " + ruta;
+            _status.Text = string.Format(UiText.Get("Status.DnetSaved"), ruta);
             System.Media.SystemSounds.Asterisk.Play();
         }
         finally

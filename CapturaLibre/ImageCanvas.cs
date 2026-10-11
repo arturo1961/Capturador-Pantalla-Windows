@@ -2,7 +2,11 @@ using System.Drawing.Drawing2D;
 
 namespace CapturaLibre;
 
-internal enum AnnotationTool { Rectangle, Ellipse, Arrow, Pencil, Text, Redact, Crop }
+internal enum AnnotationTool
+{
+    Rectangle, Ellipse, Arrow, Pencil, Text, Step,
+    Pixelate, Blur, Redact, Crop, Move
+}
 
 internal sealed record AnnotationAction(
     AnnotationTool Tool,
@@ -115,7 +119,7 @@ internal sealed class ImageCanvas : Control
         var action = new AnnotationAction(Tool, _start, _end, _path.ToArray());
         _path.Clear();
         Invalidate();
-        if (action.Tool == AnnotationTool.Text ||
+        if (action.Tool is AnnotationTool.Text or AnnotationTool.Step ||
             (action.Tool == AnnotationTool.Pencil && action.Path.Count > 1) ||
             (action.Tool != AnnotationTool.Pencil && action.Start != action.End))
             EditCompleted?.Invoke(action);
@@ -149,6 +153,31 @@ internal static class AnnotationPainter
             return;
         }
 
+        if (a.Tool is AnnotationTool.Pixelate or AnnotationTool.Blur)
+        {
+            using var effect = new SolidBrush(Color.FromArgb(preview ? 75 : 35,
+                a.Tool == AnnotationTool.Pixelate ? Color.DodgerBlue : Color.MediumPurple));
+            using var outline = new Pen(a.Tool == AnnotationTool.Pixelate
+                ? Color.DodgerBlue : Color.MediumPurple, Math.Max(2, width));
+            if (preview) outline.DashStyle = DashStyle.Dash;
+            g.FillRectangle(effect, rect);
+            g.DrawRectangle(outline, rect);
+            return;
+        }
+
+        if (a.Tool == AnnotationTool.Move)
+        {
+            if (!preview) return;
+            using var movePen = new Pen(Color.FromArgb(0, 154, 235), 2)
+            {
+                DashStyle = DashStyle.Dash,
+                StartCap = LineCap.ArrowAnchor,
+                EndCap = LineCap.ArrowAnchor
+            };
+            g.DrawLine(movePen, a.Start, a.End);
+            return;
+        }
+
         if (a.Tool == AnnotationTool.Redact)
         {
             using var fill = new SolidBrush(Color.Black);
@@ -164,6 +193,18 @@ internal static class AnnotationPainter
                 g.DrawLine(marker, a.Start.X - 7, a.Start.Y, a.Start.X + 7, a.Start.Y);
                 g.DrawLine(marker, a.Start.X, a.Start.Y - 7, a.Start.X, a.Start.Y + 7);
             }
+            return;
+        }
+
+        if (a.Tool == AnnotationTool.Step)
+        {
+            int radius = Math.Max(16, width * 5);
+            Rectangle marker = new(a.Start.X - radius, a.Start.Y - radius,
+                radius * 2, radius * 2);
+            using var fill = new SolidBrush(Color.FromArgb(preview ? 150 : 255, color));
+            using var border = new Pen(Color.White, Math.Max(2, width / 2));
+            g.FillEllipse(fill, marker);
+            g.DrawEllipse(border, marker);
             return;
         }
 

@@ -1,8 +1,8 @@
-# 📸 CapturaLibre DNET 2.5.3 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.6.0 — C# / .NET 8
 
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.5.3:** incorpora 61 idiomas, selector ampliado y botones adaptables. Los idiomas de escritura derecha a izquierda mantienen una distribución visual uniforme. Incluye instalador para Windows y edición portátil autónoma.
+> **Versión estable 2.6.0:** incorpora captura guiada con lupa, nuevas herramientas de edición, perfiles, nombres automáticos, historial local y miniaturas de ventanas. Mantiene los 61 idiomas, el instalador para Windows y la edición portátil autónoma.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -19,13 +19,17 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 ## Qué puedes hacer
 
 - Capturar una zona del escritorio, todas las pantallas o la pantalla principal.
+- Seleccionar una zona con lupa, coordenadas y punto de mira para conseguir recortes precisos.
 - **Seleccionar una ventana de una lista** (botón «Actualizar lista»). Se intenta restaurarla si está minimizada. La captura usa los píxeles visibles en pantalla: ventanas superpuestas, contenido protegido o ciertas aplicaciones aceleradas por GPU pueden no capturarse correctamente.
 - Activar retardos de 0, 3, 5 y 10 segundos.
 - **Minimizar otras ventanas al iniciar, sin cerrarlas**, o desactivar esa opción. El ajuste se guarda para siguientes inicios en `%LOCALAPPDATA%\CapturaLibre_DNET\ajustes.json`. También puedes restaurarlas mediante un botón; al cerrar CapturaLibre se intenta restaurar las que minimizó el programa.
-- Editar con flechas, rectángulos, elipses, lápiz, texto y ocultación de datos por relleno negro; escoger colores básicos o usar **«Más colores…»** para paletas y tono personalizado.
+- Editar con flechas, rectángulos, elipses, lápiz, pasos numerados y texto enriquecido; pixelar, desenfocar u ocultar datos; mover la última anotación y escoger colores básicos o personalizados.
 - **Recortar**, **girar 90°** y **voltear** la imagen; deshacer hasta seis cambios.
 - **Abrir un PNG/JPG del disco** para editarlo.
 - Guardar PNG/JPG, guardado rápido en `Imágenes\CapturaLibre`, copiar la imagen o abrir su carpeta.
+- Usar perfiles preparados para manuales, documentación, privacidad o capturas rápidas.
+- Configurar nombres automáticos con fecha, hora, contador y nombre de ventana.
+- Consultar un historial local con miniaturas y volver a abrir capturas recientes.
 - Atajos **F6** para zona, **F7** para todas las pantallas, **F8** para la principal; en el editor **Ctrl+Z**, **Ctrl+S** y **Ctrl+C**.
 - **Modo DNET**: guardado directo en PNG mediante el botón dedicado o el disparo externo, carpeta seleccionable y nombres correlativos, sin cambiar el foco de DNET.
 - **Ajuste automático DNET**: elimina el espacio vacío situado a la derecha y debajo del contenido, conserva la zona útil con un margen de seguridad y evita incluir la barra de tareas.
@@ -39,7 +43,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 
 La publicación ofrece dos opciones:
 
-- `Instalar_CapturaLibre_DNET_2.5.3.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
+- `Instalar_CapturaLibre_DNET_2.6.0.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
 - `CapturaLibre_DNET.exe`: edición portátil que se abre directamente sin instalación.
 
 Ambas son autónomas y no necesitan que .NET 8 esté instalado.
@@ -50,7 +54,7 @@ Ambas son autónomas y no necesitan que .NET 8 esté instalado.
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.3-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.6.0-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022

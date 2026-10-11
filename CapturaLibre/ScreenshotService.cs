@@ -9,7 +9,7 @@ internal static class ScreenshotService
     public static Bitmap Take(Rectangle bounds)
     {
         if (bounds.Width < 1 || bounds.Height < 1)
-            throw new InvalidOperationException("No se ha encontrado ninguna pantalla.");
+            throw new InvalidOperationException(UiText.Get("Error.NoScreen"));
 
         var image = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
         try

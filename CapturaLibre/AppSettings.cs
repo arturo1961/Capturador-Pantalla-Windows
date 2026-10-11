@@ -4,7 +4,7 @@ namespace CapturaLibre;
 
 internal sealed class AppSettings
 {
-    private const int CurrentSettingsVersion = 251;
+    private const int CurrentSettingsVersion = 260;
 
     // Cero identifica los ajustes creados por versiones anteriores, que no
     // incluían este campo en el archivo JSON.
@@ -14,6 +14,12 @@ internal sealed class AppSettings
     public bool DnetAutoCrop { get; set; } = true;
     public string DnetOutputFolder { get; set; } = string.Empty;
     public string Language { get; set; } = "es";
+    public string CapturePreset { get; set; } = "Manual";
+    public string CaptureNamePattern { get; set; } = "CapturaLibre_{fecha}_{contador}";
+    public int CaptureCounter { get; set; } = 1;
+    public string QuickSaveFolder { get; set; } = string.Empty;
+    public int HistoryLimit { get; set; } = 20;
+    public bool WindowThumbnails { get; set; } = true;
 
     private static string SettingsPath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -63,5 +69,23 @@ internal sealed class AppSettings
         {
             // El guardado de preferencias no debe bloquear la captura de pantalla.
         }
+    }
+
+    public string NextCaptureFileName(string? windowTitle = null)
+    {
+        int counter = Math.Max(1, CaptureCounter++);
+        string pattern = string.IsNullOrWhiteSpace(CaptureNamePattern)
+            ? "CapturaLibre_{fecha}_{contador}"
+            : CaptureNamePattern.Trim();
+        string name = pattern
+            .Replace("{fecha}", DateTime.Now.ToString("yyyyMMdd"), StringComparison.OrdinalIgnoreCase)
+            .Replace("{hora}", DateTime.Now.ToString("HHmmss"), StringComparison.OrdinalIgnoreCase)
+            .Replace("{contador}", counter.ToString("000"), StringComparison.OrdinalIgnoreCase)
+            .Replace("{ventana}", windowTitle ?? "captura", StringComparison.OrdinalIgnoreCase);
+        foreach (char invalid in Path.GetInvalidFileNameChars()) name = name.Replace(invalid, '_');
+        name = name.Trim(' ', '.');
+        if (name.Length == 0) name = $"CapturaLibre_{DateTime.Now:yyyyMMdd_HHmmss}";
+        Save();
+        return name + ".png";
     }
 }

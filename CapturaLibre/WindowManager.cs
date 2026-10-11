@@ -3,9 +3,21 @@ using System.Text;
 
 namespace CapturaLibre;
 
-internal sealed record WindowChoice(nint Handle, string Title)
+internal sealed class WindowChoice : IDisposable
 {
+    public nint Handle { get; }
+    public string Title { get; }
+    public Bitmap? Thumbnail { get; }
+
+    public WindowChoice(nint handle, string title, Bitmap? thumbnail)
+    {
+        Handle = handle;
+        Title = title;
+        Thumbnail = thumbnail;
+    }
+
     public override string ToString() => Title.Length > 95 ? Title[..92] + "…" : Title;
+    public void Dispose() => Thumbnail?.Dispose();
 }
 
 // No cierra aplicaciones ni toca sus documentos.
@@ -78,7 +90,7 @@ internal sealed class WindowManager
         return pid != 0 && pid != (uint)Environment.ProcessId;
     }
 
-    public List<WindowChoice> ListWindows()
+    public List<WindowChoice> ListWindows(bool includeThumbnails = true)
     {
         var windows = new List<WindowChoice>();
         EnumWindows((hwnd, _) =>
@@ -88,10 +100,60 @@ internal sealed class WindowManager
             var name = new StringBuilder(length + 1);
             GetWindowText(hwnd, name, name.Capacity);
             string title = name.ToString().Trim();
-            if (title.Length > 0) windows.Add(new WindowChoice(hwnd, title));
+            if (title.Length > 0)
+            {
+                Bitmap? thumbnail = includeThumbnails && windows.Count < 30
+                    ? CreateThumbnail(hwnd)
+                    : null;
+                windows.Add(new WindowChoice(hwnd, title, thumbnail));
+            }
             return true;
         }, 0);
         return windows;
+    }
+
+    private static Bitmap? CreateThumbnail(nint hwnd)
+    {
+        try
+        {
+            if (IsIconic(hwnd) || !TryGetVisibleBounds(hwnd, out Rectangle bounds)) return null;
+            using Bitmap capture = ScreenshotService.Take(bounds);
+            var result = new Bitmap(112, 66);
+            using Graphics graphics = Graphics.FromImage(result);
+            graphics.Clear(Color.FromArgb(29, 41, 59));
+            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            Rectangle fitted = FitInside(capture.Size, result.Size);
+            graphics.DrawImage(capture, fitted);
+            return result;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private static Rectangle FitInside(Size source, Size target)
+    {
+        float scale = Math.Min((float)target.Width / source.Width, (float)target.Height / source.Height);
+        int width = Math.Max(1, (int)(source.Width * scale));
+        int height = Math.Max(1, (int)(source.Height * scale));
+        return new Rectangle((target.Width - width) / 2, (target.Height - height) / 2, width, height);
+    }
+
+    private static bool TryGetVisibleBounds(nint hwnd, out Rectangle visible)
+    {
+        if (DwmGetWindowAttribute(hwnd, DwmwaExtendedFrameBounds,
+                out NativeRect frame, Marshal.SizeOf<NativeRect>()) != 0 ||
+            frame.Right <= frame.Left || frame.Bottom <= frame.Top)
+        {
+            if (!GetWindowRect(hwnd, out frame))
+            {
+                visible = Rectangle.Empty;
+                return false;
+            }
+        }
+        visible = Rectangle.Intersect(frame.ToRectangle(), ScreenshotService.DesktopBounds);
+        return visible.Width >= 2 && visible.Height >= 2;
     }
 
     public int MinimizeOthers()
@@ -129,23 +191,14 @@ internal sealed class WindowManager
     public Rectangle PrepareWindowCapture(nint hwnd)
     {
         if (!IsWindow(hwnd) || !IsCandidate(hwnd))
-            throw new InvalidOperationException("La ventana seleccionada ya no está disponible.");
+            throw new InvalidOperationException(UiText.Get("Error.WindowUnavailable"));
 
         if (IsIconic(hwnd)) ShowWindow(hwnd, SwRestore);
         // Windows puede impedir cambiar el primer plano en algunos contextos.
         // El usuario puede restaurar la ventana manualmente en ese caso.
         SetForegroundWindow(hwnd);
-        if (DwmGetWindowAttribute(hwnd, DwmwaExtendedFrameBounds,
-                out NativeRect frame, Marshal.SizeOf<NativeRect>()) != 0 ||
-            frame.Right <= frame.Left || frame.Bottom <= frame.Top)
-        {
-            if (!GetWindowRect(hwnd, out frame))
-                throw new InvalidOperationException("No se puede localizar la ventana.");
-        }
-
-        Rectangle visible = Rectangle.Intersect(frame.ToRectangle(), ScreenshotService.DesktopBounds);
-        if (visible.Width < 2 || visible.Height < 2)
-            throw new InvalidOperationException("La ventana debe estar visible dentro de una pantalla.");
+        if (!TryGetVisibleBounds(hwnd, out Rectangle visible))
+            throw new InvalidOperationException(UiText.Get("Error.WindowNotVisible"));
         return visible;
     }
 }

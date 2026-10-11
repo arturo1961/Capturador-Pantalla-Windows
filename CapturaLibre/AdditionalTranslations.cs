@@ -20,7 +20,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Dutch() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - DNET-editie", ["Main.Tagline"] = "Handige, privé-schermafbeeldingen zonder gedoe.",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - DNET-editie", ["Main.Tagline"] = "Handige, privé-schermafbeeldingen zonder gedoe.",
         ["Main.Heading"] = "Wat wilt u vastleggen?", ["Main.Language"] = "Taal:",
         ["Capture.Region"] = "Gebied selecteren met de muis   [F6]", ["Capture.All"] = "Alle schermen   [F7]",
         ["Capture.Primary"] = "Hoofdscherm   [F8]", ["Capture.WindowSection"] = "Een specifiek venster vastleggen",
@@ -50,7 +50,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Polish() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - edycja DNET", ["Main.Tagline"] = "Przydatne, prywatne zrzuty ekranu bez komplikacji.",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - edycja DNET", ["Main.Tagline"] = "Przydatne, prywatne zrzuty ekranu bez komplikacji.",
         ["Main.Heading"] = "Co chcesz przechwycić?", ["Main.Language"] = "Język:",
         ["Capture.Region"] = "Wybierz obszar myszą   [F6]", ["Capture.All"] = "Wszystkie ekrany   [F7]",
         ["Capture.Primary"] = "Ekran główny   [F8]", ["Capture.WindowSection"] = "Przechwyć wybrane okno",
@@ -80,7 +80,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Romanian() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - ediția DNET", ["Main.Tagline"] = "Capturi de ecran utile, private și fără complicații.",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - ediția DNET", ["Main.Tagline"] = "Capturi de ecran utile, private și fără complicații.",
         ["Main.Heading"] = "Ce doriți să capturați?", ["Main.Language"] = "Limbă:",
         ["Capture.Region"] = "Selectați o zonă cu mouse-ul   [F6]", ["Capture.All"] = "Toate ecranele   [F7]",
         ["Capture.Primary"] = "Ecranul principal   [F8]", ["Capture.WindowSection"] = "Capturați o anumită fereastră",
@@ -110,7 +110,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Russian() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 — версия DNET", ["Main.Tagline"] = "Полезные и конфиденциальные снимки экрана без лишних сложностей.",
+        ["Main.Title"] = "CapturaLibre 2.6.0 — версия DNET", ["Main.Tagline"] = "Полезные и конфиденциальные снимки экрана без лишних сложностей.",
         ["Main.Heading"] = "Что вы хотите захватить?", ["Main.Language"] = "Язык:",
         ["Capture.Region"] = "Выбрать область мышью   [F6]", ["Capture.All"] = "Все экраны   [F7]",
         ["Capture.Primary"] = "Основной экран   [F8]", ["Capture.WindowSection"] = "Захватить определённое окно",
@@ -140,7 +140,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> SimplifiedChinese() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - DNET 版", ["Main.Tagline"] = "简单、实用且保护隐私的屏幕截图。",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - DNET 版", ["Main.Tagline"] = "简单、实用且保护隐私的屏幕截图。",
         ["Main.Heading"] = "您想截取什么？", ["Main.Language"] = "语言：",
         ["Capture.Region"] = "用鼠标选择区域   [F6]", ["Capture.All"] = "所有屏幕   [F7]",
         ["Capture.Primary"] = "主屏幕   [F8]", ["Capture.WindowSection"] = "截取指定窗口",
@@ -170,7 +170,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Japanese() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - DNET版", ["Main.Tagline"] = "簡単で便利、プライバシーを守るスクリーンショット。",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - DNET版", ["Main.Tagline"] = "簡単で便利、プライバシーを守るスクリーンショット。",
         ["Main.Heading"] = "何をキャプチャしますか？", ["Main.Language"] = "言語：",
         ["Capture.Region"] = "マウスで範囲を選択   [F6]", ["Capture.All"] = "すべての画面   [F7]",
         ["Capture.Primary"] = "メイン画面   [F8]", ["Capture.WindowSection"] = "特定のウィンドウをキャプチャ",
@@ -200,7 +200,7 @@ internal static class AdditionalTranslations
 
     private static Dictionary<string, string> Hindi() => new()
     {
-        ["Main.Title"] = "CapturaLibre 2.5.3 - DNET संस्करण", ["Main.Tagline"] = "आसान, उपयोगी और निजी स्क्रीनशॉट।",
+        ["Main.Title"] = "CapturaLibre 2.6.0 - DNET संस्करण", ["Main.Tagline"] = "आसान, उपयोगी और निजी स्क्रीनशॉट।",
         ["Main.Heading"] = "आप क्या कैप्चर करना चाहते हैं?", ["Main.Language"] = "भाषा:",
         ["Capture.Region"] = "माउस से क्षेत्र चुनें   [F6]", ["Capture.All"] = "सभी स्क्रीन   [F7]",
         ["Capture.Primary"] = "मुख्य स्क्रीन   [F8]", ["Capture.WindowSection"] = "किसी विशेष विंडो को कैप्चर करें",

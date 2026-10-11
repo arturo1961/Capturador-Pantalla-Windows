@@ -2,8 +2,8 @@
 setlocal
 cd /d "%~dp0"
 
-echo Publicando CapturaLibre DNET 2.5.3...
-dotnet publish CapturaLibre\CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar_2.5.3
+echo Publicando CapturaLibre DNET 2.6.0...
+dotnet publish CapturaLibre\CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar_2.6.0
 if errorlevel 1 goto :error
 
 set "ISCC=%LOCALAPPDATA%\Programs\Inno Setup 7\ISCC.exe"
@@ -22,7 +22,7 @@ echo Creando el instalador...
 if errorlevel 1 goto :error
 
 echo.
-echo Instalador terminado en instalador_2.5.3\Instalar_CapturaLibre_DNET_2.5.3.exe
+echo Instalador terminado en instalador_2.6.0\Instalar_CapturaLibre_DNET_2.6.0.exe
 pause
 exit /b 0
 

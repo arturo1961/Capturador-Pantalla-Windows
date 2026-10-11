@@ -14,10 +14,14 @@ internal sealed class EditorForm : Form
     private readonly Panel _selectedColorPreview = new();
     private readonly ContextMenuStrip _colorPalettes = new();
     private readonly List<Image> _paletteIcons = new();
+    private EditableAnnotation? _lastEditable;
+    private int _nextStepNumber = 1;
+    private readonly AppSettings _settings;
     private const int MaxUndo = 6;
 
-    public EditorForm(Bitmap image)
+    public EditorForm(Bitmap image, AppSettings? settings = null)
     {
+        _settings = settings ?? AppSettings.Load();
         _image = image; // ownership transferred from caller
         Text = string.Format(UiText.Get("Editor.Title"), _image.Width, _image.Height);
         Icon = Program.AppIcon;
@@ -42,13 +46,23 @@ internal sealed class EditorForm : Form
             WrapContents = true, Padding = new Padding(12, 10, 12, 8),
             BackColor = Color.FromArgb(29, 41, 59)
         };
-        AddTool(tools, "Tool.Arrow", AnnotationTool.Arrow, selected: true);
+        AnnotationTool defaultTool = _settings.CapturePreset switch
+        {
+            "Documentación" => AnnotationTool.Step,
+            "Privacidad" => AnnotationTool.Redact,
+            _ => AnnotationTool.Arrow
+        };
+        AddTool(tools, "Tool.Arrow", AnnotationTool.Arrow, selected: defaultTool == AnnotationTool.Arrow);
         AddTool(tools, "Tool.Rectangle", AnnotationTool.Rectangle);
         AddTool(tools, "Tool.Ellipse", AnnotationTool.Ellipse);
         AddTool(tools, "Tool.Pencil", AnnotationTool.Pencil);
         AddTool(tools, "Tool.Text", AnnotationTool.Text);
-        AddTool(tools, "Tool.Redact", AnnotationTool.Redact);
+        AddTool(tools, "Tool.Step", AnnotationTool.Step, selected: defaultTool == AnnotationTool.Step);
+        AddTool(tools, "Tool.Pixelate", AnnotationTool.Pixelate);
+        AddTool(tools, "Tool.Blur", AnnotationTool.Blur);
+        AddTool(tools, "Tool.Redact", AnnotationTool.Redact, selected: defaultTool == AnnotationTool.Redact);
         AddTool(tools, "Tool.Crop", AnnotationTool.Crop);
+        AddTool(tools, "Tool.Move", AnnotationTool.Move);
         // Mantener juntos la etiqueta y el selector al pasar a la siguiente fila.
         var thicknessGroup = new FlowLayoutPanel
         {
@@ -215,7 +229,11 @@ internal sealed class EditorForm : Form
             _status.Text = tool switch
             {
                 AnnotationTool.Redact => "Ocultar datos: dibuja un rectángulo. Sus píxeles se sustituirán por negro.",
+                AnnotationTool.Pixelate => "Pixelar: dibuja sobre la información que quieras hacer ilegible.",
+                AnnotationTool.Blur => "Desenfocar: dibuja sobre la información que quieras difuminar.",
                 AnnotationTool.Crop => "Recortar: arrastra una zona para conservar solo ese fragmento.",
+                AnnotationTool.Step => $"Paso numerado: el siguiente marcador será {_nextStepNumber}.",
+                AnnotationTool.Move => "Mover último: arrastra para desplazar la última flecha, forma, texto o paso.",
                 _ => "Herramienta seleccionada: " + text + "."
             };
         };
@@ -345,11 +363,17 @@ internal sealed class EditorForm : Form
 
     private void OnEdit(AnnotationAction action)
     {
-        string? text = null;
+        TextAnnotationOptions? textOptions = null;
         if (action.Tool == AnnotationTool.Text)
         {
-            text = AskForText();
-            if (string.IsNullOrWhiteSpace(text)) return;
+            textOptions = AskForText();
+            if (textOptions is null || string.IsNullOrWhiteSpace(textOptions.Text)) return;
+        }
+
+        if (action.Tool == AnnotationTool.Move)
+        {
+            MoveLastAnnotation(action);
+            return;
         }
 
         Bitmap? before = null;
@@ -367,41 +391,160 @@ internal sealed class EditorForm : Form
                 if (rect.Width < 3 || rect.Height < 3)
                 {
                     before.Dispose();
-                    _status.Text = "El recorte debe ser mayor que 2 × 2 píxeles.";
+                    _status.Text = UiText.Get("Editor.CropTooSmall");
                     return;
                 }
                 Bitmap cropped = _image.Clone(rect, PixelFormat.Format32bppArgb);
                 _canvas.Image = cropped;
                 _image.Dispose();
                 _image = cropped;
+                _lastEditable?.Dispose();
+                _lastEditable = null;
                 UpdateImageTitle();
             }
             else
             {
-                using Graphics g = Graphics.FromImage(_image);
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                if (action.Tool == AnnotationTool.Text)
+                int? stepNumber = action.Tool == AnnotationTool.Step ? _nextStepNumber++ : null;
+                ApplyAnnotation(_image, action, _ink, _canvas.InkWidth, textOptions, stepNumber);
+
+                if (IsEditable(action.Tool))
                 {
-                    using var font = new Font("Segoe UI", Math.Max(16, _canvas.InkWidth * 5),
-                        FontStyle.Bold, GraphicsUnit.Pixel);
-                    using var brush = new SolidBrush(_ink);
-                    g.DrawString(text!, font, brush, action.Start);
+                    _lastEditable?.Dispose();
+                    _lastEditable = new EditableAnnotation((Bitmap)before.Clone(), action,
+                        _ink, _canvas.InkWidth, textOptions, stepNumber);
                 }
                 else
-                    AnnotationPainter.Paint(g, action, _ink, _canvas.InkWidth, preview: false);
+                {
+                    _lastEditable?.Dispose();
+                    _lastEditable = null;
+                }
             }
 
             PushUndo(before);
             before = null;
             _canvas.Invalidate();
-            _status.Text = $"Cambio aplicado. Deshacer disponible ({_history.Count}/{MaxUndo}).";
+            _status.Text = string.Format(UiText.Get("Editor.ChangeApplied"), _history.Count, MaxUndo);
         }
         catch (Exception ex)
         {
             before?.Dispose();
-            MessageBox.Show(this, "No se pudo aplicar el cambio:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.ApplyChange") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private static bool IsEditable(AnnotationTool tool) => tool is
+        AnnotationTool.Arrow or AnnotationTool.Rectangle or AnnotationTool.Ellipse or
+        AnnotationTool.Pencil or AnnotationTool.Text or AnnotationTool.Step;
+
+    private void MoveLastAnnotation(AnnotationAction move)
+    {
+        if (_lastEditable is null)
+        {
+            _status.Text = UiText.Get("Editor.NoMovable");
+            return;
+        }
+
+        int dx = move.End.X - move.Start.X;
+        int dy = move.End.Y - move.Start.Y;
+        AnnotationAction translated = Translate(_lastEditable.Action, dx, dy);
+        Bitmap before = (Bitmap)_image.Clone();
+        Bitmap replacement = (Bitmap)_lastEditable.BaseImage.Clone();
+        try
+        {
+            ApplyAnnotation(replacement, translated, _lastEditable.Color,
+                _lastEditable.Width, _lastEditable.TextOptions, _lastEditable.StepNumber);
+            PushUndo(before);
+            _image.Dispose();
+            _image = replacement;
+            _canvas.Image = _image;
+            _lastEditable.Action = translated;
+            _canvas.Invalidate();
+            _status.Text = UiText.Get("Editor.Moved");
+        }
+        catch
+        {
+            before.Dispose();
+            replacement.Dispose();
+            throw;
+        }
+    }
+
+    private static AnnotationAction Translate(AnnotationAction action, int dx, int dy) => new(
+        action.Tool,
+        new Point(action.Start.X + dx, action.Start.Y + dy),
+        new Point(action.End.X + dx, action.End.Y + dy),
+        action.Path.Select(point => new Point(point.X + dx, point.Y + dy)).ToArray());
+
+    private static Rectangle ActionRectangle(AnnotationAction action, Size imageSize)
+    {
+        Rectangle rect = Rectangle.FromLTRB(
+            Math.Min(action.Start.X, action.End.X), Math.Min(action.Start.Y, action.End.Y),
+            Math.Max(action.Start.X, action.End.X), Math.Max(action.Start.Y, action.End.Y));
+        return Rectangle.Intersect(rect, new Rectangle(Point.Empty, imageSize));
+    }
+
+    private static void ApplyAnnotation(Bitmap target, AnnotationAction action, Color color,
+        int width, TextAnnotationOptions? textOptions, int? stepNumber)
+    {
+        if (action.Tool is AnnotationTool.Pixelate or AnnotationTool.Blur)
+        {
+            ApplyRegionEffect(target, ActionRectangle(action, target.Size),
+                action.Tool == AnnotationTool.Pixelate);
+            return;
+        }
+
+        using Graphics g = Graphics.FromImage(target);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        if (action.Tool == AnnotationTool.Text && textOptions is not null)
+        {
+            FontStyle style = textOptions.Bold ? FontStyle.Bold : FontStyle.Regular;
+            using var font = new Font(textOptions.FontName, textOptions.Size, style,
+                GraphicsUnit.Pixel);
+            SizeF measured = g.MeasureString(textOptions.Text, font);
+            if (textOptions.DrawBackground)
+            {
+                using var background = new SolidBrush(textOptions.BackgroundColor);
+                g.FillRectangle(background, action.Start.X - 5, action.Start.Y - 3,
+                    measured.Width + 10, measured.Height + 6);
+            }
+            using var brush = new SolidBrush(color);
+            g.DrawString(textOptions.Text, font, brush, action.Start);
+            return;
+        }
+
+        AnnotationPainter.Paint(g, action, color, width, preview: false);
+        if (action.Tool == AnnotationTool.Step && stepNumber.HasValue)
+        {
+            int radius = Math.Max(16, width * 5);
+            using var font = new Font("Segoe UI", radius, FontStyle.Bold, GraphicsUnit.Pixel);
+            string number = stepNumber.Value.ToString();
+            SizeF measured = g.MeasureString(number, font);
+            g.DrawString(number, font, Brushes.White,
+                action.Start.X - measured.Width / 2,
+                action.Start.Y - measured.Height / 2 - 1);
+        }
+    }
+
+    private static void ApplyRegionEffect(Bitmap image, Rectangle rect, bool pixelate)
+    {
+        if (rect.Width < 3 || rect.Height < 3) return;
+        int divisor = pixelate ? 12 : 24;
+        int smallWidth = Math.Max(1, rect.Width / divisor);
+        int smallHeight = Math.Max(1, rect.Height / divisor);
+        using Bitmap original = image.Clone(rect, PixelFormat.Format32bppArgb);
+        using Bitmap reduced = new(smallWidth, smallHeight, PixelFormat.Format32bppArgb);
+        using (Graphics small = Graphics.FromImage(reduced))
+        {
+            small.InterpolationMode = pixelate ? InterpolationMode.NearestNeighbor
+                : InterpolationMode.HighQualityBilinear;
+            small.DrawImage(original, new Rectangle(0, 0, smallWidth, smallHeight));
+        }
+        using Graphics output = Graphics.FromImage(image);
+        output.InterpolationMode = pixelate ? InterpolationMode.NearestNeighbor
+            : InterpolationMode.HighQualityBicubic;
+        output.PixelOffsetMode = pixelate ? PixelOffsetMode.Half : PixelOffsetMode.HighQuality;
+        output.DrawImage(reduced, rect);
     }
 
     private void PushUndo(Bitmap previous)
@@ -424,6 +567,8 @@ internal sealed class EditorForm : Form
         {
             before = (Bitmap)_image.Clone();
             _image.RotateFlip(type);
+            _lastEditable?.Dispose();
+            _lastEditable = null;
             PushUndo(before);
             before = null;
             UpdateImageTitle();
@@ -433,7 +578,7 @@ internal sealed class EditorForm : Form
         catch (Exception ex)
         {
             before?.Dispose();
-            MessageBox.Show(this, "No se pudo modificar la imagen:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.ModifyImage") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -441,7 +586,7 @@ internal sealed class EditorForm : Form
     private void UpdateImageTitle() =>
         Text = string.Format(UiText.Get("Editor.Title"), _image.Width, _image.Height);
 
-    private string? AskForText()
+    private TextAnnotationOptions? AskForText()
     {
         using var input = new Form
         {
@@ -450,7 +595,7 @@ internal sealed class EditorForm : Form
             FormBorderStyle = FormBorderStyle.FixedDialog,
             MinimizeBox = false, MaximizeBox = false,
             ShowInTaskbar = false,
-            ClientSize = new Size(480, 170),
+            ClientSize = new Size(540, 285),
             Font = new Font("Segoe UI", 11)
         };
         var caption = new Label
@@ -458,29 +603,58 @@ internal sealed class EditorForm : Form
             Text = UiText.Get("Dialog.TextPrompt"),
             Left = 18, Top = 15, Width = 445, Height = 28
         };
-        var box = new TextBox { Left = 18, Top = 52, Width = 445 };
+        var box = new TextBox { Left = 18, Top = 52, Width = 500 };
+        var sizeLabel = new Label { Text = UiText.Get("Dialog.TextSize"), Left = 18, Top = 96, Width = 90 };
+        var size = new NumericUpDown
+        {
+            Left = 110, Top = 92, Width = 75, Minimum = 10, Maximum = 96,
+            Value = Math.Max(16, _canvas.InkWidth * 5)
+        };
+        var bold = new CheckBox { Text = UiText.Get("Dialog.TextBold"), Left = 205, Top = 94, Width = 130, Checked = true };
+        var background = new CheckBox
+        {
+            Text = UiText.Get("Dialog.TextBackground"), Left = 18, Top = 135,
+            Width = 260, Checked = false
+        };
+        var backgroundColor = new Button
+        {
+            Text = UiText.Get("Dialog.TextBackgroundColor"), Left = 300, Top = 130,
+            Width = 180, Height = 34, BackColor = Color.White
+        };
+        Color chosenBackground = Color.White;
+        backgroundColor.Click += (_, _) =>
+        {
+            using var picker = new ColorDialog { Color = chosenBackground, FullOpen = true };
+            if (picker.ShowDialog(input) != DialogResult.OK) return;
+            chosenBackground = picker.Color;
+            backgroundColor.BackColor = chosenBackground;
+        };
         var ok = new Button
         {
             Text = UiText.Get("Dialog.OK"), DialogResult = DialogResult.OK,
-            Left = 259, Top = 112, Width = 98, Height = 38
+            Left = 310, Top = 220, Width = 98, Height = 38
         };
         var cancel = new Button
         {
             Text = UiText.Get("Dialog.Cancel"), DialogResult = DialogResult.Cancel,
-            Left = 365, Top = 112, Width = 98, Height = 38
+            Left = 420, Top = 220, Width = 98, Height = 38
         };
-        input.Controls.AddRange([caption, box, ok, cancel]);
+        input.Controls.AddRange([caption, box, sizeLabel, size, bold, background,
+            backgroundColor, ok, cancel]);
         input.AcceptButton = ok;
         input.CancelButton = cancel;
         input.Shown += (_, _) => box.Focus();
-        return input.ShowDialog(this) == DialogResult.OK ? box.Text : null;
+        return input.ShowDialog(this) == DialogResult.OK
+            ? new TextAnnotationOptions(box.Text, "Segoe UI", (float)size.Value,
+                bold.Checked, background.Checked, chosenBackground)
+            : null;
     }
 
     private void Undo()
     {
         if (_history.Count == 0)
         {
-            _status.Text = "No hay cambios para deshacer.";
+            _status.Text = UiText.Get("Editor.NoUndo");
             return;
         }
         Bitmap previous = _history.Last!.Value;
@@ -488,18 +662,20 @@ internal sealed class EditorForm : Form
         _image.Dispose();
         _image = previous;
         _canvas.Image = _image;
+        _lastEditable?.Dispose();
+        _lastEditable = null;
         UpdateImageTitle();
         _canvas.Invalidate();
-        _status.Text = "Última modificación deshecha.";
+        _status.Text = UiText.Get("Editor.Undone");
     }
 
     private void SaveAs()
     {
         using var dialog = new SaveFileDialog
         {
-            Title = "Guardar captura",
-            Filter = "Imagen PNG (*.png)|*.png|Imagen JPEG (*.jpg)|*.jpg",
-            FileName = "CapturaLibre_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png",
+            Title = UiText.Get("Dialog.SaveCaptureTitle"),
+            Filter = UiText.Get("Dialog.SaveFilter"),
+            FileName = _settings.NextCaptureFileName(),
             AddExtension = true,
             DefaultExt = "png",
             OverwritePrompt = true
@@ -510,9 +686,11 @@ internal sealed class EditorForm : Form
 
     private void QuickSave()
     {
-        string folder = GetSaveFolder();
+        string folder = string.IsNullOrWhiteSpace(_settings.QuickSaveFolder)
+            ? GetSaveFolder()
+            : _settings.QuickSaveFolder;
         Directory.CreateDirectory(folder);
-        string path = Path.Combine(folder, "CapturaLibre_" + DateTime.Now.ToString("yyyyMMdd_HHmmss_fff") + ".png");
+        string path = Path.Combine(folder, _settings.NextCaptureFileName());
         SaveFile(path);
     }
 
@@ -522,11 +700,12 @@ internal sealed class EditorForm : Form
         {
             string ext = Path.GetExtension(path).ToLowerInvariant();
             _image.Save(path, ext is ".jpg" or ".jpeg" ? ImageFormat.Jpeg : ImageFormat.Png);
-            _status.Text = "Imagen guardada en: " + path;
+            CaptureHistory.Add(_image, _settings.HistoryLimit);
+            _status.Text = string.Format(UiText.Get("Status.ImageSaved"), path);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "No se pudo guardar la imagen:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.SaveImage") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -543,7 +722,9 @@ internal sealed class EditorForm : Form
     {
         try
         {
-            string folder = GetSaveFolder();
+            string folder = string.IsNullOrWhiteSpace(_settings.QuickSaveFolder)
+                ? GetSaveFolder()
+                : _settings.QuickSaveFolder;
             Directory.CreateDirectory(folder);
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {
@@ -553,7 +734,7 @@ internal sealed class EditorForm : Form
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "No se pudo abrir la carpeta:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.OpenFolder") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -563,11 +744,11 @@ internal sealed class EditorForm : Form
         try
         {
             Clipboard.SetImage(_image);
-            _status.Text = "Imagen copiada. Puedes pegarla en otro programa (Ctrl+V).";
+            _status.Text = UiText.Get("Status.ImageCopied");
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, "No se pudo copiar al portapapeles:\n" + ex.Message,
+            MessageBox.Show(this, UiText.Get("Error.CopyImage") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -585,9 +766,37 @@ internal sealed class EditorForm : Form
         _image.Dispose();
         foreach (Bitmap b in _history) b.Dispose();
         _history.Clear();
+        _lastEditable?.Dispose();
+        _lastEditable = null;
         _colorPalettes.Dispose();
         foreach (Image icon in _paletteIcons) icon.Dispose();
         _paletteIcons.Clear();
         base.OnFormClosed(e);
     }
+
+    private sealed class EditableAnnotation : IDisposable
+    {
+        public Bitmap BaseImage { get; }
+        public AnnotationAction Action { get; set; }
+        public Color Color { get; }
+        public int Width { get; }
+        public TextAnnotationOptions? TextOptions { get; }
+        public int? StepNumber { get; }
+
+        public EditableAnnotation(Bitmap baseImage, AnnotationAction action, Color color,
+            int width, TextAnnotationOptions? textOptions, int? stepNumber)
+        {
+            BaseImage = baseImage;
+            Action = action;
+            Color = color;
+            Width = width;
+            TextOptions = textOptions;
+            StepNumber = stepNumber;
+        }
+
+        public void Dispose() => BaseImage.Dispose();
+    }
+
+    private sealed record TextAnnotationOptions(string Text, string FontName, float Size,
+        bool Bold, bool DrawBackground, Color BackgroundColor);
 }
