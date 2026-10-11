@@ -23,7 +23,7 @@ jobs:
       - name: Publicar EXE x64 independiente de .NET instalado
         shell: pwsh
         run: |
-          dotnet publish CapturaLibre/CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar_2.5.2
+          dotnet publish CapturaLibre/CapturaLibre.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -p:DebugSymbols=false -o publicar_2.5.3
       - name: Instalar compilador de Inno Setup
         shell: pwsh
         run: choco install innosetup --no-progress -y
@@ -33,8 +33,8 @@ jobs:
       - name: Guardar ejecutable compilado
         uses: actions/upload-artifact@v4
         with:
-          name: CapturaLibre-DNET-2.5.2-Windows-x64
+          name: CapturaLibre-DNET-2.5.3-Windows-x64
           path: |
-            publicar_2.5.2/
-            instalador_2.5.2/
+            publicar_2.5.3/
+            instalador_2.5.3/
           if-no-files-found: error

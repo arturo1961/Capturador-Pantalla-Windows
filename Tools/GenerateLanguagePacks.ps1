@@ -128,7 +128,7 @@ function Invoke-Translation([string]$text, [string]$target) {
 
 function Normalize-Texts($texts) {
     $texts['Brand'] = 'CapturaLibre'
-    $texts['Main.Title'] = $texts['Main.Title'] -replace '^.*?2\.5\.2', 'CapturaLibre 2.5.2'
+    $texts['Main.Title'] = $texts['Main.Title'] -replace '^.*?2\.5\.2', 'CapturaLibre 2.5.3'
     $editorTitle = [string]$texts['Editor.Title']
     $lastSeparator = $editorTitle.LastIndexOf(' - ', [StringComparison]::Ordinal)
     if ($lastSeparator -ge 0) {

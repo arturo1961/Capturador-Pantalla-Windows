@@ -1,8 +1,8 @@
-# 📸 CapturaLibre DNET 2.5.2 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.5.3 — C# / .NET 8
 
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.5.2:** añade un instalador profesional para Windows y conserva también la edición portátil. El funcionamiento de las capturas permanece igual que en la versión 2.5.1.
+> **Versión estable 2.5.3:** incorpora 61 idiomas, selector ampliado, botones adaptables y disposición de derecha a izquierda. Incluye instalador para Windows y edición portátil autónoma.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -39,7 +39,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 
 La publicación ofrece dos opciones:
 
-- `Instalar_CapturaLibre_DNET_2.5.2.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
+- `Instalar_CapturaLibre_DNET_2.5.3.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
 - `CapturaLibre_DNET.exe`: edición portátil que se abre directamente sin instalación.
 
 Ambas son autónomas y no necesitan que .NET 8 esté instalado.
@@ -50,7 +50,7 @@ Ambas son autónomas y no necesitan que .NET 8 esté instalado.
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.2-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.3-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022

@@ -1,5 +1,15 @@
 # Historial de versiones
 
+## 2.5.3 (61 idiomas y paquetes ampliables)
+
+- Un único ejecutable permite elegir entre 61 idiomas.
+- Se incluyen español, catalán, valenciano, gallego, euskera y aranés/occitano.
+- Árabe, hebreo, persa y urdu adaptan la interfaz al sentido de lectura de derecha a izquierda.
+- El selector de idioma y su lista desplegable son más anchos para mostrar completos los nombres.
+- Los botones reducen automáticamente el tamaño del texto cuando una traducción necesita más espacio.
+- Se pueden añadir o corregir traducciones mediante archivos JSON en la carpeta `Idiomas`, sin recompilar el programa.
+- Se distribuyen de nuevo el ejecutable portátil autónomo y el instalador para Windows.
+
 ## 2.5.2 (instalador para Windows)
 
 - Nuevo instalador profesional `Instalar_CapturaLibre_DNET_2.5.2.exe`.
