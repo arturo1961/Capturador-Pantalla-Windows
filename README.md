@@ -1,8 +1,8 @@
-# 📸 CapturaLibre DNET 2.5.0 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.5.1 — C# / .NET 8
 
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.5.0:** incorpora un selector de idioma, recuerda la elección y traduce la ventana principal, el editor, las paletas y la ayuda DNET.
+> **Versión estable 2.5.1:** añade el ajuste automático al contenido útil de DNET y conserva la interfaz multilingüe de la versión 2.5.0.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -31,6 +31,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 - Guardar PNG/JPG, guardado rápido en `Imágenes\CapturaLibre`, copiar la imagen o abrir su carpeta.
 - Atajos **F6** para zona, **F7** para todas las pantallas, **F8** para la principal; en el editor **Ctrl+Z**, **Ctrl+S** y **Ctrl+C**.
 - **Modo DNET**: guardado directo en PNG mediante el botón dedicado o el disparo externo, carpeta seleccionable y nombres correlativos, sin cambiar el foco de DNET.
+- **Ajuste automático DNET**: elimina el espacio vacío situado a la derecha y debajo del contenido, conserva la zona útil con un margen de seguridad y evita incluir la barra de tareas.
 - Los botones normales, incluida **Capturar ventana**, abren siempre el editor para pintar, escribir, recortar y ocultar datos.
 - El botón **?** junto al disparo externo explica dentro del programa la diferencia entre ambos modos.
 
@@ -42,7 +43,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.0-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.1-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022
@@ -72,13 +73,14 @@ El resultado del comando `dotnet publish` se guarda en `publicar\CapturaLibre_DN
 
 1. Activa **«Activar disparo externo DNET»**.
 2. Pulsa **«Elegir carpeta…»** y selecciona la carpeta `01_CAPTURAS` del manual.
-3. Deja CapturaLibre minimizado y prepara en DNET la pantalla o el menú que quieras documentar.
-4. Para un disparo controlado desde otro programa, crea este archivo:
+3. Deja activado **«Ajustar automáticamente al contenido útil de DNET»** cuando quieras imágenes más legibles y sin grandes márgenes vacíos.
+4. Deja CapturaLibre minimizado y prepara en DNET la pantalla o el menú que quieras documentar.
+5. Para un disparo controlado desde otro programa, crea este archivo:
 
    `%LOCALAPPDATA%\CapturaLibre_DNET\capturar_dnet.txt`
 
    El contenido es opcional. Si escribes, por ejemplo, `017_propiedades_boton`, la captura se guardará como `017_propiedades_boton.png`. Si se deja vacío, CapturaLibre asigna el siguiente número disponible.
-5. CapturaLibre toma la pantalla principal a resolución nativa, guarda el PNG sin abrir el editor y emite un sonido cuando el archivo ya está escrito.
+6. CapturaLibre toma la pantalla principal a resolución nativa, ajusta la imagen si la opción está activa, guarda el PNG sin abrir el editor y emite un sonido cuando el archivo ya está escrito.
 
 El archivo de disparo se elimina automáticamente después de procesarlo. Esto permite capturar menús desplegados y otras situaciones que se cerrarían al cambiar el foco hacia el capturador.
 

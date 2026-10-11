@@ -4,13 +4,14 @@ namespace CapturaLibre;
 
 internal sealed class AppSettings
 {
-    private const int CurrentSettingsVersion = 250;
+    private const int CurrentSettingsVersion = 251;
 
     // Cero identifica los ajustes creados por versiones anteriores, que no
     // incluían este campo en el archivo JSON.
     public int SettingsVersion { get; set; }
     public bool MinimizeOnStart { get; set; }
     public bool DnetMode { get; set; }
+    public bool DnetAutoCrop { get; set; } = true;
     public string DnetOutputFolder { get; set; } = string.Empty;
     public string Language { get; set; } = "es";
 

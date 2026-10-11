@@ -81,7 +81,7 @@ internal sealed class MainForm : Form
         };
         content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
         content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        foreach (float pixels in new float[] { 52, 67, 66, 103, 60, 66, 58, 132 })
+        foreach (float pixels in new float[] { 52, 67, 66, 103, 60, 66, 58, 168 })
             content.RowStyles.Add(new RowStyle(SizeType.Absolute, pixels));
         content.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         content.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
@@ -210,15 +210,16 @@ internal sealed class MainForm : Form
         {
             Dock = DockStyle.Fill,
             ColumnCount = 3,
-            RowCount = 3,
+            RowCount = 4,
             Padding = new Padding(3, 5, 0, 5)
         };
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43));
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 46));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
         var modoDnet = UiText.Bind(new CheckBox
         {
             Checked = _settings.DnetMode,
@@ -267,11 +268,27 @@ internal sealed class MainForm : Form
         };
         dnetRow.Controls.Add(capturaDnet, 2, 0);
         _captureButtons.Add(capturaDnet);
+        var recorteAutomaticoDnet = UiText.Bind(new CheckBox
+        {
+            Checked = _settings.DnetAutoCrop,
+            AutoSize = false,
+            Dock = DockStyle.Fill,
+            Font = new Font("Segoe UI", 9.5f),
+            TextAlign = ContentAlignment.MiddleLeft,
+            Margin = new Padding(0, 0, 0, 0)
+        }, "Dnet.AutoCrop");
+        recorteAutomaticoDnet.CheckedChanged += (_, _) =>
+        {
+            _settings.DnetAutoCrop = recorteAutomaticoDnet.Checked;
+            _settings.Save();
+        };
+        dnetRow.Controls.Add(recorteAutomaticoDnet, 0, 1);
+        dnetRow.SetColumnSpan(recorteAutomaticoDnet, 3);
         _dnetFolderLabel.Dock = DockStyle.Fill;
         _dnetFolderLabel.AutoEllipsis = true;
         _dnetFolderLabel.TextAlign = ContentAlignment.MiddleLeft;
         _dnetFolderLabel.ForeColor = Color.FromArgb(75, 88, 105);
-        dnetRow.Controls.Add(_dnetFolderLabel, 0, 1);
+        dnetRow.Controls.Add(_dnetFolderLabel, 0, 2);
         dnetRow.SetColumnSpan(_dnetFolderLabel, 3);
         var instruccionesDnet = UiText.Bind(new Label
         {
@@ -280,7 +297,7 @@ internal sealed class MainForm : Form
             ForeColor = Color.FromArgb(75, 88, 105),
             TextAlign = ContentAlignment.MiddleLeft
         }, "Dnet.Trigger");
-        dnetRow.Controls.Add(instruccionesDnet, 0, 2);
+        dnetRow.Controls.Add(instruccionesDnet, 0, 3);
         dnetRow.SetColumnSpan(instruccionesDnet, 3);
         Place(content, dnetRow, 0, 7, 2);
 
@@ -503,7 +520,9 @@ internal sealed class MainForm : Form
             await Task.Delay(250); // Quitar nuestra ventana de los píxeles capturados.
 
             Rectangle desktop = mode == CaptureMode.PrimaryScreen
-                ? Screen.PrimaryScreen?.Bounds ?? ScreenshotService.DesktopBounds
+                ? guardarDirectamenteDnet && _settings.DnetAutoCrop
+                    ? Screen.PrimaryScreen?.WorkingArea ?? ScreenshotService.DesktopBounds
+                    : Screen.PrimaryScreen?.Bounds ?? ScreenshotService.DesktopBounds
                 : ScreenshotService.DesktopBounds;
             if (mode == CaptureMode.Window)
             {
@@ -550,6 +569,12 @@ internal sealed class MainForm : Form
         {
             try
             {
+                if (_settings.DnetAutoCrop)
+                {
+                    Bitmap recortada = ScreenshotService.AutoCropForDnet(shot);
+                    shot.Dispose();
+                    shot = recortada;
+                }
                 string ruta = GuardarCapturaDnet(shot, null);
                 _status.Text = "Captura DNET guardada en: " + ruta;
                 System.Media.SystemSounds.Asterisk.Play();
@@ -648,8 +673,16 @@ internal sealed class MainForm : Form
         {
             if (restaurarVentana) Hide();
             await Task.Delay(250);
-            Rectangle pantalla = Screen.PrimaryScreen?.Bounds ?? ScreenshotService.DesktopBounds;
+            Rectangle pantalla = _settings.DnetAutoCrop
+                ? Screen.PrimaryScreen?.WorkingArea ?? ScreenshotService.DesktopBounds
+                : Screen.PrimaryScreen?.Bounds ?? ScreenshotService.DesktopBounds;
             captura = ScreenshotService.Take(pantalla);
+            if (_settings.DnetAutoCrop)
+            {
+                Bitmap recortada = ScreenshotService.AutoCropForDnet(captura);
+                captura.Dispose();
+                captura = recortada;
+            }
             string ruta = GuardarCapturaDnet(captura, nombreSolicitado);
             _status.Text = "Captura DNET guardada en: " + ruta;
             System.Media.SystemSounds.Asterisk.Play();

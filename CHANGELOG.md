@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## 2.5.1 (ajuste automático DNET)
+
+- Nueva opción para ajustar automáticamente la captura al contenido útil de DNET.
+- Elimina grandes márgenes vacíos a la derecha y debajo del contenido, conservando un margen de seguridad.
+- La captura directa evita incluir la barra de tareas cuando el ajuste está activado.
+- La preferencia se guarda y está disponible en los seis idiomas de la interfaz.
+
 ## 2.5.0 (interfaz multilingüe)
 
 - Un único ejecutable permite elegir Español, English, Français, Deutsch, Italiano o Português.

@@ -22,7 +22,7 @@ internal static class UiText
         ["es"] = new()
         {
             ["Brand"] = "CapturaLibre",
-            ["Main.Title"] = "CapturaLibre 2.5.0 - edición DNET",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - edición DNET",
             ["Main.Tagline"] = "Capturas útiles, privadas y sin complicaciones.",
             ["Main.Heading"] = "¿Qué deseas capturar?",
             ["Main.Language"] = "Idioma:",
@@ -41,11 +41,12 @@ internal static class UiText
             ["Dnet.Enable"] = "Activar disparo externo DNET",
             ["Dnet.ChooseFolder"] = "Elegir carpeta...",
             ["Dnet.Capture5"] = "Captura DNET en 5 s",
+            ["Dnet.AutoCrop"] = "Ajustar automáticamente al contenido útil de DNET",
             ["Dnet.Folder"] = "Carpeta: {0}",
             ["Dnet.Trigger"] = "Disparo externo sin cambiar el foco: %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Ayuda sobre el disparo externo DNET",
             ["Dnet.HelpTitle"] = "Ayuda del modo DNET",
-            ["Dnet.HelpBody"] = "Hay dos formas de trabajar:\n\n• Capturas normales: los botones Zona, Pantallas, Pantalla principal y Capturar ventana abren siempre el editor para pintar, escribir, recortar u ocultar datos.\n\n• Captura directa DNET: el botón 'Captura DNET en 5 s' y el archivo capturar_dnet.txt guardan el PNG directamente, sin abrir el editor y sin cambiar el foco.\n\nEsta casilla solamente activa o desactiva el disparo externo DNET. No cambia el funcionamiento de los botones normales.",
+            ["Dnet.HelpBody"] = "Hay dos formas de trabajar:\n\n• Capturas normales: los botones Zona, Pantallas, Pantalla principal y Capturar ventana abren siempre el editor para pintar, escribir, recortar u ocultar datos.\n\n• Captura directa DNET: el botón 'Captura DNET en 5 s' y el archivo capturar_dnet.txt guardan el PNG directamente, sin abrir el editor y sin cambiar el foco.\n\nLa opción de ajuste automático elimina el espacio vacío situado a la derecha y debajo del contenido DNET, conservando la zona útil y una separación de seguridad.\n\nLa primera casilla solamente activa o desactiva el disparo externo DNET. No cambia el funcionamiento de los botones normales.",
             ["Main.Help"] = "F6: zona - F7: todas las pantallas - F8: pantalla principal. Puedes editar, recortar, girar y ocultar datos. El contenido de las capturas no se envía a internet.",
             ["Main.Ready"] = "Listo para capturar. Todo se procesa en tu ordenador.",
             ["Editor.Title"] = "Editar captura - {0} x {1} - CapturaLibre",
@@ -80,7 +81,7 @@ internal static class UiText
         },
         ["en"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.0 - DNET edition",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - DNET edition",
             ["Main.Tagline"] = "Useful, private screenshots without complications.",
             ["Main.Heading"] = "What would you like to capture?",
             ["Main.Language"] = "Language:",
@@ -93,6 +94,7 @@ internal static class UiText
             ["Main.MinimizeOnStart"] = "Minimize other windows on startup (without closing them)",
             ["Main.OpenImage"] = "Open image...", ["Dnet.Enable"] = "Enable external DNET trigger",
             ["Dnet.ChooseFolder"] = "Choose folder...", ["Dnet.Capture5"] = "DNET capture in 5 s",
+            ["Dnet.AutoCrop"] = "Automatically fit to useful DNET content",
             ["Dnet.Folder"] = "Folder: {0}",
             ["Dnet.Trigger"] = "External trigger without changing focus: %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Help for the external DNET trigger",
@@ -128,7 +130,7 @@ internal static class UiText
         },
         ["fr"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.0 - édition DNET", ["Main.Tagline"] = "Des captures utiles, privées et sans complications.",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - édition DNET", ["Main.Tagline"] = "Des captures utiles, privées et sans complications.",
             ["Main.Heading"] = "Que souhaitez-vous capturer ?", ["Main.Language"] = "Langue :",
             ["Capture.Region"] = "Sélectionner une zone à la souris   [F6]", ["Capture.All"] = "Tous les écrans   [F7]",
             ["Capture.Primary"] = "Écran principal   [F8]", ["Capture.WindowSection"] = "Capturer une fenêtre précise",
@@ -138,6 +140,7 @@ internal static class UiText
             ["Main.MinimizeOnStart"] = "Réduire les autres fenêtres au démarrage (sans les fermer)",
             ["Main.OpenImage"] = "Ouvrir une image...", ["Dnet.Enable"] = "Activer le déclencheur DNET externe",
             ["Dnet.ChooseFolder"] = "Choisir un dossier...", ["Dnet.Capture5"] = "Capture DNET dans 5 s",
+            ["Dnet.AutoCrop"] = "Ajuster automatiquement au contenu DNET utile",
             ["Dnet.Folder"] = "Dossier : {0}", ["Dnet.Trigger"] = "Déclencheur externe sans changer le focus : %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Aide sur le déclencheur DNET externe",
             ["Dnet.HelpTitle"] = "Aide du mode DNET",
@@ -168,7 +171,7 @@ internal static class UiText
         },
         ["de"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.0 - DNET-Ausgabe", ["Main.Tagline"] = "Nützliche, private Bildschirmfotos ohne Umstände.",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - DNET-Ausgabe", ["Main.Tagline"] = "Nützliche, private Bildschirmfotos ohne Umstände.",
             ["Main.Heading"] = "Was möchten Sie aufnehmen?", ["Main.Language"] = "Sprache:",
             ["Capture.Region"] = "Bereich mit der Maus auswählen   [F6]", ["Capture.All"] = "Alle Bildschirme   [F7]",
             ["Capture.Primary"] = "Hauptbildschirm   [F8]", ["Capture.WindowSection"] = "Bestimmtes Fenster aufnehmen",
@@ -178,6 +181,7 @@ internal static class UiText
             ["Main.MinimizeOnStart"] = "Andere Fenster beim Start minimieren (nicht schließen)",
             ["Main.OpenImage"] = "Bild öffnen...", ["Dnet.Enable"] = "Externen DNET-Auslöser aktivieren",
             ["Dnet.ChooseFolder"] = "Ordner auswählen...", ["Dnet.Capture5"] = "DNET-Aufnahme in 5 s",
+            ["Dnet.AutoCrop"] = "Automatisch an den nützlichen DNET-Inhalt anpassen",
             ["Dnet.Folder"] = "Ordner: {0}", ["Dnet.Trigger"] = "Externer Auslöser ohne Fokuswechsel: %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Hilfe zum externen DNET-Auslöser",
             ["Dnet.HelpTitle"] = "Hilfe zum DNET-Modus",
@@ -208,7 +212,7 @@ internal static class UiText
         },
         ["it"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.0 - edizione DNET", ["Main.Tagline"] = "Catture utili, private e senza complicazioni.",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - edizione DNET", ["Main.Tagline"] = "Catture utili, private e senza complicazioni.",
             ["Main.Heading"] = "Cosa desideri catturare?", ["Main.Language"] = "Lingua:",
             ["Capture.Region"] = "Seleziona un'area con il mouse   [F6]", ["Capture.All"] = "Tutti gli schermi   [F7]",
             ["Capture.Primary"] = "Schermo principale   [F8]", ["Capture.WindowSection"] = "Cattura una finestra specifica",
@@ -218,6 +222,7 @@ internal static class UiText
             ["Main.MinimizeOnStart"] = "Riduci le altre finestre all'avvio (senza chiuderle)",
             ["Main.OpenImage"] = "Apri immagine...", ["Dnet.Enable"] = "Attiva trigger DNET esterno",
             ["Dnet.ChooseFolder"] = "Scegli cartella...", ["Dnet.Capture5"] = "Cattura DNET tra 5 s",
+            ["Dnet.AutoCrop"] = "Adatta automaticamente al contenuto DNET utile",
             ["Dnet.Folder"] = "Cartella: {0}", ["Dnet.Trigger"] = "Trigger esterno senza cambiare focus: %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Guida per il trigger DNET esterno",
             ["Dnet.HelpTitle"] = "Guida della modalità DNET",
@@ -248,7 +253,7 @@ internal static class UiText
         },
         ["pt"] = new()
         {
-            ["Main.Title"] = "CapturaLibre 2.5.0 - edição DNET", ["Main.Tagline"] = "Capturas úteis, privadas e sem complicações.",
+            ["Main.Title"] = "CapturaLibre 2.5.1 - edição DNET", ["Main.Tagline"] = "Capturas úteis, privadas e sem complicações.",
             ["Main.Heading"] = "O que deseja capturar?", ["Main.Language"] = "Idioma:",
             ["Capture.Region"] = "Selecionar área com o rato   [F6]", ["Capture.All"] = "Todos os ecrãs   [F7]",
             ["Capture.Primary"] = "Ecrã principal   [F8]", ["Capture.WindowSection"] = "Capturar uma janela específica",
@@ -258,6 +263,7 @@ internal static class UiText
             ["Main.MinimizeOnStart"] = "Minimizar outras janelas ao iniciar (sem as fechar)",
             ["Main.OpenImage"] = "Abrir imagem...", ["Dnet.Enable"] = "Ativar acionador DNET externo",
             ["Dnet.ChooseFolder"] = "Escolher pasta...", ["Dnet.Capture5"] = "Captura DNET em 5 s",
+            ["Dnet.AutoCrop"] = "Ajustar automaticamente ao conteúdo DNET útil",
             ["Dnet.Folder"] = "Pasta: {0}", ["Dnet.Trigger"] = "Acionador externo sem mudar o foco: %LOCALAPPDATA%\\CapturaLibre_DNET\\capturar_dnet.txt",
             ["Dnet.HelpAccessible"] = "Ajuda sobre o acionador DNET externo",
             ["Dnet.HelpTitle"] = "Ajuda do modo DNET",
