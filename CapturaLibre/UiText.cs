@@ -7,7 +7,7 @@ internal sealed record LanguageOption(string Code, string DisplayName)
 
 internal static class UiText
 {
-    public static readonly LanguageOption[] Languages =
+    private static readonly LanguageOption[] BuiltInLanguages =
     [
         new("es", "Español"),
         new("en", "English"),
@@ -23,6 +23,8 @@ internal static class UiText
         new("ja", "日本語"),
         new("hi", "हिन्दी")
     ];
+
+    public static readonly LanguageOption[] Languages;
 
     private static readonly Dictionary<string, Dictionary<string, string>> Texts = new()
     {
@@ -308,7 +310,27 @@ internal static class UiText
         ["hi"] = AdditionalTranslations.Create("hi")
     };
 
+    private static readonly HashSet<string> RightToLeftLanguages = new(StringComparer.OrdinalIgnoreCase);
+
+    static UiText()
+    {
+        var languages = BuiltInLanguages.ToList();
+        foreach (LanguagePack pack in LanguagePackLoader.Load())
+        {
+            Texts[pack.Code] = pack.Texts;
+            int existing = languages.FindIndex(option =>
+                option.Code.Equals(pack.Code, StringComparison.OrdinalIgnoreCase));
+            var option = new LanguageOption(pack.Code, pack.DisplayName);
+            if (existing >= 0) languages[existing] = option;
+            else languages.Add(option);
+            if (pack.RightToLeft) RightToLeftLanguages.Add(pack.Code);
+        }
+        Languages = languages.ToArray();
+    }
+
     public static string CurrentLanguage { get; private set; } = "es";
+
+    public static bool IsRightToLeft => RightToLeftLanguages.Contains(CurrentLanguage);
 
     public static void SetLanguage(string? code) =>
         CurrentLanguage = Texts.ContainsKey(code ?? string.Empty) ? code! : "es";

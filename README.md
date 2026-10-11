@@ -8,23 +8,11 @@ CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de c
 
 ## Idiomas disponibles
 
-El mismo ejecutable permite cambiar el idioma desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio.
+El mismo ejecutable permite cambiar entre **61 idiomas** desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio. Están incluidos el español, catalán, valenciano, gallego, euskera y aranés/occitano, además de una selección amplia de idiomas europeos, asiáticos y de otras regiones.
 
-- Español
-- English
-- Français
-- Deutsch
-- Italiano
-- Português
-- Nederlands
-- Polski
-- Română
-- Русский
-- 简体中文
-- 日本語
-- हिन्दी
+Los botones ajustan automáticamente el tamaño de sus textos para que las traducciones largas no queden cortadas. Árabe, hebreo, persa y urdu cambian también la disposición de la ventana al sentido de lectura de derecha a izquierda.
 
-Los botones ajustan automáticamente el tamaño de sus textos para que las traducciones largas no queden cortadas.
+Consulta [IDIOMAS.md](IDIOMAS.md) para ver la lista completa y el sistema de paquetes ampliables. Se pueden añadir o corregir traducciones colocando un archivo JSON en la carpeta `Idiomas` situada junto al ejecutable, **sin recompilar el programa ni cambiar su versión**.
 
 La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barra de tareas. Los archivos PNG e ICO están en `CapturaLibre/Assets/`. También conserva el botón **«Más colores…»** en el editor, con paletas de colores vivos, pastel, oscuros y neutros y un selector para elegir cualquier color personalizado.
 

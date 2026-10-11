@@ -22,6 +22,7 @@ internal sealed class MainForm : Form
     public MainForm()
     {
         UiText.SetLanguage(_settings.Language);
+        ApplyLanguageDirection();
         Text = UiText.Get("Main.Title");
         Icon = Program.AppIcon;
         StartPosition = FormStartPosition.CenterScreen;
@@ -49,7 +50,7 @@ internal sealed class MainForm : Form
 
         var languagePanel = new FlowLayoutPanel
         {
-            Size = new Size(270, 58),
+            Size = new Size(390, 58),
             Anchor = AnchorStyles.Top | AnchorStyles.Right,
             FlowDirection = FlowDirection.LeftToRight, WrapContents = false,
             Padding = new Padding(0, 15, 14, 0), BackColor = Navy
@@ -60,7 +61,8 @@ internal sealed class MainForm : Form
             Padding = new Padding(0, 7, 4, 0)
         }, "Main.Language"));
         _language.DropDownStyle = ComboBoxStyle.DropDownList;
-        _language.Width = 145;
+        _language.Width = 250;
+        _language.DropDownWidth = 280;
         _language.Items.AddRange(UiText.Languages);
         _language.SelectedIndex = Array.FindIndex(UiText.Languages,
             option => option.Code == UiText.CurrentLanguage);
@@ -352,12 +354,19 @@ internal sealed class MainForm : Form
     {
         if (_language.SelectedItem is not LanguageOption option) return;
         UiText.SetLanguage(option.Code);
+        ApplyLanguageDirection();
         _settings.Language = option.Code;
         _settings.Save();
         Text = UiText.Get("Main.Title");
         UiText.Apply(this);
         _status.Text = UiText.Get("Main.Ready");
         ActualizarEstadoModoDnet();
+    }
+
+    private void ApplyLanguageDirection()
+    {
+        RightToLeft = UiText.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        RightToLeftLayout = UiText.IsRightToLeft;
     }
 
     private void ShowDnetHelp()

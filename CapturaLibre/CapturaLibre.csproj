@@ -19,5 +19,7 @@
   <ItemGroup>
     <!-- Copia interna del icono: funciona también con PublishSingleFile. -->
     <EmbeddedResource Include="Assets\CapturaLibre.ico" LogicalName="CapturaLibre.AppIcon.ico" />
+    <!-- Los idiomas integrados siguen dentro del ejecutable único. -->
+    <EmbeddedResource Include="LanguagePacks\*.json" />
   </ItemGroup>
 </Project>
