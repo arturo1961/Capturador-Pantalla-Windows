@@ -2,6 +2,7 @@
 
 ## 2.5.3 (61 idiomas y paquetes ampliables)
 
+- La interfaz conserva la misma distribución en los idiomas de derecha a izquierda; el texto mantiene su escritura natural sin invertir la cabecera ni las columnas.
 - Un único ejecutable permite elegir entre 61 idiomas.
 - Se incluyen español, catalán, valenciano, gallego, euskera y aranés/occitano.
 - Árabe, hebreo, persa y urdu adaptan la interfaz al sentido de lectura de derecha a izquierda.

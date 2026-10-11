@@ -365,8 +365,13 @@ internal sealed class MainForm : Form
 
     private void ApplyLanguageDirection()
     {
-        RightToLeft = UiText.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
-        RightToLeftLayout = UiText.IsRightToLeft;
+        // La estructura visual se mantiene siempre igual en todos los idiomas.
+        // El algoritmo bidireccional de Windows dibuja correctamente los textos
+        // árabes, hebreos, persas y urdu sin tener que reflejar todo el formulario.
+        // Invertir el formulario desplazaba la cabecera, cambiaba las columnas de
+        // sitio y podía cortar la marca CapturaLibre.
+        RightToLeft = RightToLeft.No;
+        RightToLeftLayout = false;
     }
 
     private void ShowDnetHelp()

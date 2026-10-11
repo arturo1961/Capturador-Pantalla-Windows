@@ -72,7 +72,7 @@ CapturaLibre incluye **61 idiomas** en un único ejecutable. El idioma se elige 
 - Kiswahili
 - Afrikaans
 
-Los idiomas árabe, hebreo, persa y urdu activan automáticamente la disposición de derecha a izquierda. Los botones ajustan su texto para aprovechar el espacio disponible.
+Los textos en árabe, hebreo, persa y urdu conservan su escritura natural de derecha a izquierda, pero la estructura de la aplicación permanece igual que en español. La cabecera, los botones y las columnas no cambian de sitio al seleccionar estos idiomas.
 
 ## Añadir o corregir un idioma sin recompilar
 
