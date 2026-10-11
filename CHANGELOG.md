@@ -12,7 +12,8 @@
 - Historial local de capturas recientes, sin enviar datos a internet.
 - Miniaturas al elegir una ventana concreta.
 - Herramienta de validación y lista visual para revisar los idiomas antes de publicar.
-- Las funciones nuevas, preferencias, historial, mensajes de estado y errores quedan traducidos en los 61 idiomas; ningún paquete depende del inglés como sustituto.
+- Las funciones nuevas, preferencias, historial, mensajes de estado y errores quedan traducidos en los 62 idiomas; ningún paquete depende del inglés como sustituto.
+- Se incorpora la interfaz completa en asturiano (`ast`) dentro de la misma versión estable 2.6.0.
 - El validador impide compilar una revisión de idiomas incompleta o con marcadores internos alterados.
 
 ## 2.5.3 (61 idiomas y paquetes ampliables)

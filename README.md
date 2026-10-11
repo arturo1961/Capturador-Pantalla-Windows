@@ -2,13 +2,13 @@
 
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.6.0:** incorpora captura guiada con lupa, nuevas herramientas de edición, perfiles, nombres automáticos, historial local y miniaturas de ventanas. Mantiene los 61 idiomas, el instalador para Windows y la edición portátil autónoma.
+> **Versión estable 2.6.0:** incorpora captura guiada con lupa, nuevas herramientas de edición, perfiles, nombres automáticos, historial local y miniaturas de ventanas. Incluye 62 idiomas, el instalador para Windows y la edición portátil autónoma.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
 ## Idiomas disponibles
 
-El mismo ejecutable permite cambiar entre **61 idiomas** desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio. Están incluidos el español, catalán, valenciano, gallego, euskera y aranés/occitano, además de una selección amplia de idiomas europeos, asiáticos y de otras regiones.
+El mismo ejecutable permite cambiar entre **62 idiomas** desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio. Están incluidos el español, asturiano, catalán, valenciano, gallego, euskera y aranés/occitano, además de una selección amplia de idiomas europeos, asiáticos y de otras regiones.
 
 Los botones ajustan automáticamente el tamaño de sus textos para que las traducciones largas no queden cortadas. Árabe, hebreo, persa y urdu cambian también la disposición de la ventana al sentido de lectura de derecha a izquierda.
 

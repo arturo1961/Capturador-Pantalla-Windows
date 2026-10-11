@@ -1,10 +1,11 @@
 # Idiomas de CapturaLibre
 
-CapturaLibre incluye **61 idiomas** en un único ejecutable. El idioma se elige en la esquina superior derecha y queda guardado para el siguiente inicio.
+CapturaLibre incluye **62 idiomas** en un único ejecutable. El idioma se elige en la esquina superior derecha y queda guardado para el siguiente inicio.
 
 ## España
 
 - Español
+- Asturianu
 - Català
 - Valencià
 - Galego
