@@ -1,9 +1,13 @@
-# Lista de pruebas de CapturaLibre 2.4, edición DNET (Windows)
+# Lista de pruebas de CapturaLibre 2.5, edición DNET (Windows)
 
 Registra versión de Windows, resolución/escalado de cada pantalla y el resultado de cada punto antes de distribuir el EXE.
 
 - [ ] `dotnet build CapturaLibre/CapturaLibre.csproj -c Release` termina correctamente.
 - [ ] El EXE publicado inicia sin instalar el runtime .NET.
+- [ ] El selector muestra Español, English, Français, Deutsch, Italiano y Português.
+- [ ] Cambiar el idioma actualiza la ventana principal, el editor, las paletas y la ayuda DNET sin reiniciar.
+- [ ] El idioma seleccionado se conserva después de cerrar y volver a abrir el programa.
+- [ ] En los seis idiomas, el selector y los botones DNET se muestran completos, sin texto cortado.
 - [ ] La ventana principal es legible y desplazable si hay escalado al 125 % / 150 %.
 - [ ] Al iniciar, minimiza otras ventanas **sin cerrarlas**; al pulsar Restaurar, vuelven.
 - [ ] Al desmarcar «Minimizar otras ventanas al iniciar», el ajuste se conserva después de reiniciar.

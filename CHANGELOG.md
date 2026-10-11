@@ -1,5 +1,13 @@
 # Historial de versiones
 
+## 2.5.0 (interfaz multilingüe)
+
+- Un único ejecutable permite elegir Español, English, Français, Deutsch, Italiano o Português.
+- El idioma seleccionado se guarda y se recupera al volver a abrir CapturaLibre.
+- Se traducen la ventana principal, el editor, las herramientas, las paletas de colores y la ayuda DNET.
+- La ayuda DNET utiliza una ventana propia para traducir también el botón de aceptación.
+- Se amplía el selector de idioma y se da más espacio al bloque DNET para evitar textos y botones cortados.
+
 ## 2.4.1 (corrección del editor)
 
 - Los botones normales de captura, incluida **Capturar ventana**, abren siempre la imagen en el editor.

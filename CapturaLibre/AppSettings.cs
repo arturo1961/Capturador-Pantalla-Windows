@@ -4,7 +4,7 @@ namespace CapturaLibre;
 
 internal sealed class AppSettings
 {
-    private const int CurrentSettingsVersion = 241;
+    private const int CurrentSettingsVersion = 250;
 
     // Cero identifica los ajustes creados por versiones anteriores, que no
     // incluían este campo en el archivo JSON.
@@ -12,6 +12,7 @@ internal sealed class AppSettings
     public bool MinimizeOnStart { get; set; }
     public bool DnetMode { get; set; }
     public string DnetOutputFolder { get; set; } = string.Empty;
+    public string Language { get; set; } = "es";
 
     private static string SettingsPath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -27,9 +28,12 @@ internal sealed class AppSettings
                 // La versión 2.4.0 activaba DNET por defecto. Al actualizar,
                 // se desmarca una sola vez para que las capturas normales abran
                 // el editor. A partir de aquí se conserva la elección del usuario.
-                if (settings.SettingsVersion < CurrentSettingsVersion)
+                if (settings.SettingsVersion < 241)
                 {
                     settings.DnetMode = false;
+                }
+                if (settings.SettingsVersion < CurrentSettingsVersion)
+                {
                     settings.SettingsVersion = CurrentSettingsVersion;
                     settings.Save();
                 }

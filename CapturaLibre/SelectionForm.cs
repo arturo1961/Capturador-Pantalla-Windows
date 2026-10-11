@@ -14,7 +14,7 @@ internal sealed class SelectionForm : Form
     public SelectionForm(Bitmap desktop, Rectangle virtualBounds)
     {
         _desktop = desktop;
-        Text = "Seleccionar zona — Esc para cancelar";
+        Text = UiText.Get("Selection.Title");
         Icon = Program.AppIcon;
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.Manual;

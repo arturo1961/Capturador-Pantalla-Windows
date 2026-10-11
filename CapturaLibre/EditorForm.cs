@@ -19,7 +19,7 @@ internal sealed class EditorForm : Form
     public EditorForm(Bitmap image)
     {
         _image = image; // ownership transferred from caller
-        Text = $"Editar captura — {_image.Width} × {_image.Height} — CapturaLibre";
+        Text = string.Format(UiText.Get("Editor.Title"), _image.Width, _image.Height);
         Icon = Program.AppIcon;
         StartPosition = FormStartPosition.CenterParent;
         Size = new Size(1230, 800);
@@ -42,13 +42,13 @@ internal sealed class EditorForm : Form
             WrapContents = true, Padding = new Padding(12, 10, 12, 8),
             BackColor = Color.FromArgb(29, 41, 59)
         };
-        AddTool(tools, "Flecha", AnnotationTool.Arrow, selected: true);
-        AddTool(tools, "Rectángulo", AnnotationTool.Rectangle);
-        AddTool(tools, "Elipse", AnnotationTool.Ellipse);
-        AddTool(tools, "Lápiz", AnnotationTool.Pencil);
-        AddTool(tools, "Texto", AnnotationTool.Text);
-        AddTool(tools, "Ocultar datos", AnnotationTool.Redact);
-        AddTool(tools, "Recortar", AnnotationTool.Crop);
+        AddTool(tools, "Tool.Arrow", AnnotationTool.Arrow, selected: true);
+        AddTool(tools, "Tool.Rectangle", AnnotationTool.Rectangle);
+        AddTool(tools, "Tool.Ellipse", AnnotationTool.Ellipse);
+        AddTool(tools, "Tool.Pencil", AnnotationTool.Pencil);
+        AddTool(tools, "Tool.Text", AnnotationTool.Text);
+        AddTool(tools, "Tool.Redact", AnnotationTool.Redact);
+        AddTool(tools, "Tool.Crop", AnnotationTool.Crop);
         // Mantener juntos la etiqueta y el selector al pasar a la siguiente fila.
         var thicknessGroup = new FlowLayoutPanel
         {
@@ -58,7 +58,7 @@ internal sealed class EditorForm : Form
         };
         thicknessGroup.Controls.Add(new Label
         {
-            Text = "Grosor:", AutoSize = true, ForeColor = Color.White,
+            Text = UiText.Get("Tool.Thickness"), AutoSize = true, ForeColor = Color.White,
             Padding = new Padding(0, 10, 0, 0), Margin = new Padding(0, 0, 5, 0)
         });
         _thickness.Minimum = 1;
@@ -76,13 +76,13 @@ internal sealed class EditorForm : Form
             WrapContents = true, Padding = new Padding(12, 10, 12, 8),
             BackColor = Color.White
         };
-        AddAction(actions, "Deshacer", Undo, 105);
-        AddAction(actions, "Girar 90°", RotateRight, 118);
-        AddAction(actions, "Voltear", FlipHorizontal, 110);
-        AddAction(actions, "Guardar como…", SaveAs, 150);
-        AddAction(actions, "Guardado rápido", QuickSave, 150);
-        AddAction(actions, "Copiar imagen", CopyImage, 150);
-        AddAction(actions, "Abrir carpeta", OpenFolder, 140);
+        AddAction(actions, "Action.Undo", Undo, 105);
+        AddAction(actions, "Action.Rotate", RotateRight, 118);
+        AddAction(actions, "Action.Flip", FlipHorizontal, 110);
+        AddAction(actions, "Action.SaveAs", SaveAs, 150);
+        AddAction(actions, "Action.QuickSave", QuickSave, 150);
+        AddAction(actions, "Action.Copy", CopyImage, 150);
+        AddAction(actions, "Action.OpenFolder", OpenFolder, 140);
         // La paleta no se separa de su etiqueta al reducir la ventana.
         var palette = new FlowLayoutPanel
         {
@@ -92,7 +92,7 @@ internal sealed class EditorForm : Form
         };
         palette.Controls.Add(new Label
         {
-            Text = "Color:", AutoSize = true,
+            Text = UiText.Get("Color.Label"), AutoSize = true,
             Padding = new Padding(0, 10, 3, 0), Margin = new Padding(0, 0, 3, 0)
         });
         AddColor(palette, Color.Red);
@@ -104,7 +104,7 @@ internal sealed class EditorForm : Form
         // Se conserva todo el bloque de colores unido al ajustar el ancho.
         var moreColors = new Button
         {
-            Text = "Más colores…", Width = 150, Height = 38,
+            Text = UiText.Get("Color.More"), Width = 150, Height = 38,
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(30, 113, 205),
             ForeColor = Color.White,
@@ -131,7 +131,7 @@ internal sealed class EditorForm : Form
         _canvas.InkWidth = (int)_thickness.Value;
         _canvas.EditCompleted += OnEdit;
 
-        _status.Text = "Arrastra para anotar; haz clic para añadir texto. Ctrl+Z: deshacer · Ctrl+S: guardar · Ctrl+C: copiar.";
+        _status.Text = UiText.Get("Editor.Ready");
         _status.TextAlign = ContentAlignment.MiddleLeft;
         _status.Dock = DockStyle.Fill;
         _status.Padding = new Padding(14, 0, 0, 0);
@@ -191,8 +191,9 @@ internal sealed class EditorForm : Form
         return Math.Max(64, totalHeight + lineHeight);
     }
 
-    private void AddTool(FlowLayoutPanel panel, string text, AnnotationTool tool, bool selected = false)
+    private void AddTool(FlowLayoutPanel panel, string textKey, AnnotationTool tool, bool selected = false)
     {
+        string text = UiText.Get(textKey);
         var radio = new RadioButton
         {
             Text = text, Tag = tool,
@@ -221,8 +222,9 @@ internal sealed class EditorForm : Form
         panel.Controls.Add(radio);
     }
 
-    private static void AddAction(FlowLayoutPanel panel, string text, Action action, int width)
+    private static void AddAction(FlowLayoutPanel panel, string textKey, Action action, int width)
     {
+        string text = UiText.Get(textKey);
         var button = new Button
         {
             Text = text, Font = panel.Font,
@@ -263,45 +265,45 @@ internal sealed class EditorForm : Form
     // Familias de colores para acceder rápidamente, sin llenar el editor de botones.
     private void InitializeColorPalettes()
     {
-        AddPalette("Colores vivos", new (string Name, Color Color)[]
+        AddPalette(UiText.Get("Color.Vivid"), new (string Name, Color Color)[]
         {
-            ("Naranja", Color.DarkOrange),
-            ("Amarillo", Color.Gold),
-            ("Fucsia", Color.DeepPink),
-            ("Turquesa", Color.DarkTurquoise),
-            ("Violeta", Color.BlueViolet),
-            ("Verde brillante", Color.Lime)
+            (UiText.Get("Color.Orange"), Color.DarkOrange),
+            (UiText.Get("Color.Yellow"), Color.Gold),
+            (UiText.Get("Color.Fuchsia"), Color.DeepPink),
+            (UiText.Get("Color.Turquoise"), Color.DarkTurquoise),
+            (UiText.Get("Color.Violet"), Color.BlueViolet),
+            (UiText.Get("Color.BrightGreen"), Color.Lime)
         });
-        AddPalette("Tonos pastel", new (string Name, Color Color)[]
+        AddPalette(UiText.Get("Color.Pastel"), new (string Name, Color Color)[]
         {
-            ("Rosa pastel", Color.FromArgb(255, 182, 193)),
-            ("Azul cielo", Color.FromArgb(173, 216, 230)),
-            ("Verde menta", Color.FromArgb(152, 251, 152)),
-            ("Lavanda", Color.FromArgb(216, 191, 216)),
-            ("Melocotón", Color.FromArgb(255, 218, 185)),
-            ("Amarillo suave", Color.FromArgb(255, 250, 205))
+            (UiText.Get("Color.PastelPink"), Color.FromArgb(255, 182, 193)),
+            (UiText.Get("Color.SkyBlue"), Color.FromArgb(173, 216, 230)),
+            (UiText.Get("Color.Mint"), Color.FromArgb(152, 251, 152)),
+            (UiText.Get("Color.Lavender"), Color.FromArgb(216, 191, 216)),
+            (UiText.Get("Color.Peach"), Color.FromArgb(255, 218, 185)),
+            (UiText.Get("Color.SoftYellow"), Color.FromArgb(255, 250, 205))
         });
-        AddPalette("Colores oscuros", new (string Name, Color Color)[]
+        AddPalette(UiText.Get("Color.Dark"), new (string Name, Color Color)[]
         {
-            ("Azul marino", Color.Navy),
-            ("Burdeos", Color.Maroon),
-            ("Verde bosque", Color.ForestGreen),
-            ("Púrpura oscuro", Color.Indigo),
-            ("Marrón", Color.SaddleBrown),
-            ("Gris pizarra", Color.DarkSlateGray)
+            (UiText.Get("Color.Navy"), Color.Navy),
+            (UiText.Get("Color.Burgundy"), Color.Maroon),
+            (UiText.Get("Color.Forest"), Color.ForestGreen),
+            (UiText.Get("Color.DarkPurple"), Color.Indigo),
+            (UiText.Get("Color.Brown"), Color.SaddleBrown),
+            (UiText.Get("Color.Slate"), Color.DarkSlateGray)
         });
-        AddPalette("Colores neutros", new (string Name, Color Color)[]
+        AddPalette(UiText.Get("Color.Neutral"), new (string Name, Color Color)[]
         {
-            ("Blanco", Color.White),
-            ("Gris claro", Color.LightGray),
-            ("Gris", Color.Gray),
-            ("Gris oscuro", Color.DimGray),
-            ("Negro", Color.Black),
-            ("Beige", Color.Beige)
+            (UiText.Get("Color.White"), Color.White),
+            (UiText.Get("Color.LightGray"), Color.LightGray),
+            (UiText.Get("Color.Gray"), Color.Gray),
+            (UiText.Get("Color.DarkGray"), Color.DimGray),
+            (UiText.Get("Color.Black"), Color.Black),
+            (UiText.Get("Color.Beige"), Color.Beige)
         });
 
         _colorPalettes.Items.Add(new ToolStripSeparator());
-        var personalized = new ToolStripMenuItem("Elegir cualquier color…");
+        var personalized = new ToolStripMenuItem(UiText.Get("Color.Any"));
         personalized.Click += (_, _) => OpenCustomColorDialog();
         _colorPalettes.Items.Add(personalized);
     }
@@ -437,13 +439,13 @@ internal sealed class EditorForm : Form
     }
 
     private void UpdateImageTitle() =>
-        Text = $"Editar captura — {_image.Width} × {_image.Height} — CapturaLibre";
+        Text = string.Format(UiText.Get("Editor.Title"), _image.Width, _image.Height);
 
     private string? AskForText()
     {
         using var input = new Form
         {
-            Text = "Añadir texto a la captura",
+            Text = UiText.Get("Dialog.AddText"),
             StartPosition = FormStartPosition.CenterParent,
             FormBorderStyle = FormBorderStyle.FixedDialog,
             MinimizeBox = false, MaximizeBox = false,
@@ -453,18 +455,18 @@ internal sealed class EditorForm : Form
         };
         var caption = new Label
         {
-            Text = "Texto que deseas escribir sobre la imagen:",
+            Text = UiText.Get("Dialog.TextPrompt"),
             Left = 18, Top = 15, Width = 445, Height = 28
         };
         var box = new TextBox { Left = 18, Top = 52, Width = 445 };
         var ok = new Button
         {
-            Text = "Aceptar", DialogResult = DialogResult.OK,
+            Text = UiText.Get("Dialog.OK"), DialogResult = DialogResult.OK,
             Left = 259, Top = 112, Width = 98, Height = 38
         };
         var cancel = new Button
         {
-            Text = "Cancelar", DialogResult = DialogResult.Cancel,
+            Text = UiText.Get("Dialog.Cancel"), DialogResult = DialogResult.Cancel,
             Left = 365, Top = 112, Width = 98, Height = 38
         };
         input.Controls.AddRange([caption, box, ok, cancel]);

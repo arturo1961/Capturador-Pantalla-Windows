@@ -1,11 +1,11 @@
-# Publicar CapturaLibre DNET 2.4 en GitHub
+# Publicar CapturaLibre DNET 2.5 en GitHub
 
 El paquete de publicación contiene el **código fuente**, la licencia y el flujo automático que genera el EXE. Necesitas una cuenta de GitHub para publicarlo.
 
 1. Crea un repositorio público llamado, por ejemplo, `CapturaLibre-DNET`, sin archivos iniciales.
-2. Descomprime `CapturaLibre_DNET_2.4.1_CODIGO_FUENTE.zip`. Sube **su contenido**, no la carpeta exterior, a la raíz del repositorio. Incluye el directorio oculto `.github`.
+2. Sube **el contenido del proyecto**, no la carpeta exterior, a la raíz del repositorio. Incluye el directorio oculto `.github`.
 3. En **Actions**, elige «Compilar CapturaLibre para Windows». Si GitHub lo requiere, permite ejecutar los flujos de trabajo.
-4. Espera a que la compilación termine en verde. Dentro de la ejecución, descarga el artefacto `CapturaLibre-DNET-2.4.1-Windows-x64` que contendrá el EXE.
+4. Espera a que la compilación termine en verde. Dentro de la ejecución, descarga el artefacto `CapturaLibre-DNET-2.5.0-Windows-x64` que contendrá el EXE.
 5. Prueba el EXE en Windows 10/11 siguiendo [PRUEBAS.md](PRUEBAS.md). Si falla, conserva el error del registro de Actions para corregirlo.
 6. Tras superar las pruebas, podrás crear un **Release** con el EXE; no lo anuncies como estable antes de comprobarlo.
 7. Para el botón de patrocinio, edita `.github/FUNDING.yml` con el identificador **real** de tu cuenta de donaciones. No es obligatorio; todas las funciones siguen siendo gratuitas.
@@ -15,10 +15,10 @@ Para subir con git desde el directorio del proyecto:
 ```bash
 git init
 git add .
-git commit -m "Corregir apertura del editor en CapturaLibre DNET 2.4.1"
+git commit -m "Publicar CapturaLibre DNET 2.5.0 multilingüe"
 git branch -M main
-git remote add origin https://github.com/arturo1961/CapturaLibre-DNET.git
+git remote add origin https://github.com/arturo1961/Capturador-Pantalla-Windows.git
 git push -u origin main
 ```
 
-El repositorio previsto es `arturo1961/CapturaLibre-DNET`. Si eliges otro nombre al crearlo, cambia únicamente esa parte de la dirección antes de ejecutar el comando.
+El repositorio es `arturo1961/Capturador-Pantalla-Windows`.

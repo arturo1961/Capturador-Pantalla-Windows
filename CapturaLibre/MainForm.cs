@@ -9,6 +9,7 @@ internal sealed class MainForm : Form
     private readonly ComboBox _delay = new();
     private readonly ComboBox _windowList = new();
     private readonly Label _status = new();
+    private readonly ComboBox _language = new();
     private readonly List<Button> _captureButtons = new();
     private readonly System.Windows.Forms.Timer _dnetTriggerTimer = new() { Interval = 350 };
     private readonly Label _dnetFolderLabel = new();
@@ -20,7 +21,8 @@ internal sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "CapturaLibre 2.4.1 — edición DNET";
+        UiText.SetLanguage(_settings.Language);
+        Text = UiText.Get("Main.Title");
         Icon = Program.AppIcon;
         StartPosition = FormStartPosition.CenterScreen;
         Size = new Size(1050, 830);
@@ -31,20 +33,45 @@ internal sealed class MainForm : Form
         KeyPreview = true;
 
         var header = new Panel { Dock = DockStyle.Top, Height = 125, BackColor = Navy };
-        header.Controls.Add(new Label
+        header.Controls.Add(UiText.Bind(new Label
         {
             Text = "CapturaLibre", ForeColor = Color.White,
             Font = new Font("Segoe UI", 29, FontStyle.Bold),
             Dock = DockStyle.Top, Height = 77,
             Padding = new Padding(28, 12, 0, 0)
-        });
-        header.Controls.Add(new Label
+        }, "Brand"));
+        header.Controls.Add(UiText.Bind(new Label
         {
-            Text = "Capturas útiles, privadas y sin complicaciones.",
             ForeColor = Color.FromArgb(221, 230, 242),
             Dock = DockStyle.Bottom, Height = 46,
             Padding = new Padding(32, 0, 0, 13)
-        });
+        }, "Main.Tagline"));
+
+        var languagePanel = new FlowLayoutPanel
+        {
+            Size = new Size(270, 58),
+            Anchor = AnchorStyles.Top | AnchorStyles.Right,
+            FlowDirection = FlowDirection.LeftToRight, WrapContents = false,
+            Padding = new Padding(0, 15, 14, 0), BackColor = Navy
+        };
+        languagePanel.Controls.Add(UiText.Bind(new Label
+        {
+            AutoSize = true, ForeColor = Color.White,
+            Padding = new Padding(0, 7, 4, 0)
+        }, "Main.Language"));
+        _language.DropDownStyle = ComboBoxStyle.DropDownList;
+        _language.Width = 145;
+        _language.Items.AddRange(UiText.Languages);
+        _language.SelectedIndex = Array.FindIndex(UiText.Languages,
+            option => option.Code == UiText.CurrentLanguage);
+        _language.SelectedIndexChanged += (_, _) => ChangeLanguage();
+        languagePanel.Controls.Add(_language);
+        header.Controls.Add(languagePanel);
+        void PositionLanguagePanel() => languagePanel.Location =
+            new Point(Math.Max(0, header.ClientSize.Width - languagePanel.Width - 12), 7);
+        header.Resize += (_, _) => PositionLanguagePanel();
+        PositionLanguagePanel();
+        languagePanel.BringToFront();
 
         var content = new TableLayoutPanel
         {
@@ -54,30 +81,30 @@ internal sealed class MainForm : Form
         };
         content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
         content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        foreach (float pixels in new float[] { 52, 67, 66, 103, 60, 66, 58, 112 })
+        foreach (float pixels in new float[] { 52, 67, 66, 103, 60, 66, 58, 132 })
             content.RowStyles.Add(new RowStyle(SizeType.Absolute, pixels));
         content.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         content.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
 
-        var heading = new Label
+        var heading = UiText.Bind(new Label
         {
-            Text = "¿Qué deseas capturar?", Dock = DockStyle.Fill,
+            Dock = DockStyle.Fill,
             Font = new Font("Segoe UI", 16, FontStyle.Bold), ForeColor = Navy,
             TextAlign = ContentAlignment.MiddleLeft
-        };
+        }, "Main.Heading");
         Place(content, heading, 0, 0, 2);
 
-        Button region = NewButton("Seleccionar zona con el ratón   [F6]", Blue);
+        Button region = NewButton("Capture.Region", Blue);
         region.Click += async (_, _) => await CaptureAsync(CaptureMode.Region);
         Place(content, region, 0, 1, 2);
         _captureButtons.Add(region);
 
-        Button all = NewButton("Todas las pantallas   [F7]", Navy);
+        Button all = NewButton("Capture.All", Navy);
         all.Click += async (_, _) => await CaptureAsync(CaptureMode.AllScreens);
         Place(content, all, 0, 2, 1);
         _captureButtons.Add(all);
 
-        Button primary = NewButton("Pantalla principal   [F8]", Navy);
+        Button primary = NewButton("Capture.Primary", Navy);
         primary.Click += async (_, _) => await CaptureAsync(CaptureMode.PrimaryScreen);
         Place(content, primary, 1, 2, 1);
         _captureButtons.Add(primary);
@@ -93,23 +120,23 @@ internal sealed class MainForm : Form
         windowRow.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 209));
         windowRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
         windowRow.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        var windowTitle = new Label
+        var windowTitle = UiText.Bind(new Label
         {
-            Text = "Capturar una ventana específica", Dock = DockStyle.Fill,
+            Dock = DockStyle.Fill,
             ForeColor = Navy, Font = new Font("Segoe UI", 10f, FontStyle.Bold)
-        };
+        }, "Capture.WindowSection");
         Place(windowRow, windowTitle, 0, 0, 3);
         _windowList.DropDownStyle = ComboBoxStyle.DropDownList;
         _windowList.Dock = DockStyle.Fill;
         _windowList.Margin = new Padding(0, 6, 5, 8);
         windowRow.Controls.Add(_windowList, 0, 1);
 
-        Button refresh = NewButton("Actualizar lista", Navy);
+        Button refresh = NewButton("Capture.Refresh", Navy);
         refresh.Font = new Font("Segoe UI", 10);
         refresh.Click += (_, _) => RefreshWindows();
         windowRow.Controls.Add(refresh, 1, 1);
 
-        Button captureWindow = NewButton("Capturar ventana", Blue);
+        Button captureWindow = NewButton("Capture.Window", Blue);
         captureWindow.Font = new Font("Segoe UI", 10);
         captureWindow.Click += async (_, _) => await CaptureAsync(CaptureMode.Window);
         windowRow.Controls.Add(captureWindow, 2, 1);
@@ -122,23 +149,22 @@ internal sealed class MainForm : Form
             FlowDirection = FlowDirection.LeftToRight,
             Padding = new Padding(3, 10, 0, 0)
         };
-        delayRow.Controls.Add(new Label
+        delayRow.Controls.Add(UiText.Bind(new Label
         {
-            Text = "Retardo antes de capturar:",
             AutoSize = true, Padding = new Padding(0, 7, 0, 0)
-        });
+        }, "Capture.Delay"));
         _delay.DropDownStyle = ComboBoxStyle.DropDownList;
         _delay.Width = 95;
         _delay.Items.AddRange(["0", "3", "5", "10"]);
         _delay.SelectedIndex = 0;
         delayRow.Controls.Add(_delay);
-        delayRow.Controls.Add(new Label
+        delayRow.Controls.Add(UiText.Bind(new Label
         {
-            Text = "segundos", AutoSize = true, Padding = new Padding(6, 7, 0, 0)
-        });
+            AutoSize = true, Padding = new Padding(6, 7, 0, 0)
+        }, "Capture.Seconds"));
         Place(content, delayRow, 0, 4, 2);
 
-        Button restore = NewButton("Restaurar ventanas", Navy);
+        Button restore = NewButton("Main.Restore", Navy);
         restore.Click += (_, _) =>
         {
             int count = _windows.RestoreOthers();
@@ -146,7 +172,7 @@ internal sealed class MainForm : Form
         };
         Place(content, restore, 0, 5, 1);
 
-        Button minimize = NewButton("Minimizar otras ventanas", Navy);
+        Button minimize = NewButton("Main.Minimize", Navy);
         minimize.Click += (_, _) => MinimizeOtherWindows();
         Place(content, minimize, 1, 5, 1);
 
@@ -159,22 +185,21 @@ internal sealed class MainForm : Form
         };
         settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
         settingsRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
-        var minimizeAtStart = new CheckBox
+        var minimizeAtStart = UiText.Bind(new CheckBox
         {
-            Text = "Minimizar otras ventanas al iniciar (sin cerrarlas)",
             Checked = _settings.MinimizeOnStart,
             AutoSize = false,
             Dock = DockStyle.Fill,
             Font = new Font("Segoe UI", 9.5f),
             TextAlign = ContentAlignment.MiddleLeft
-        };
+        }, "Main.MinimizeOnStart");
         minimizeAtStart.CheckedChanged += (_, _) =>
         {
             _settings.MinimizeOnStart = minimizeAtStart.Checked;
             _settings.Save();
         };
         settingsRow.Controls.Add(minimizeAtStart);
-        var openImage = NewButton("Abrir imagen…", Navy);
+        var openImage = NewButton("Main.OpenImage", Navy);
         openImage.Font = new Font("Segoe UI", 9.5f);
         openImage.Margin = new Padding(5, 3, 5, 5);
         openImage.Click += (_, _) => OpenImage();
@@ -186,43 +211,34 @@ internal sealed class MainForm : Form
             Dock = DockStyle.Fill,
             ColumnCount = 3,
             RowCount = 3,
-            Padding = new Padding(3, 3, 0, 3)
+            Padding = new Padding(3, 5, 0, 5)
         };
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43));
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
         dnetRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
-        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
-        var modoDnet = new CheckBox
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 46));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        dnetRow.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        var modoDnet = UiText.Bind(new CheckBox
         {
-            Text = "Activar disparo externo DNET",
             Checked = _settings.DnetMode,
             AutoSize = true,
             Font = new Font("Segoe UI", 9.5f),
             TextAlign = ContentAlignment.MiddleLeft,
             Margin = new Padding(0, 8, 4, 0)
-        };
+        }, "Dnet.Enable");
         modoDnet.CheckedChanged += (_, _) =>
         {
             _settings.DnetMode = modoDnet.Checked;
             _settings.Save();
             ActualizarEstadoModoDnet();
         };
-        var ayudaDnet = NewButton("?", Navy);
-        ayudaDnet.AccessibleName = "Ayuda sobre el disparo externo DNET";
+        var ayudaDnet = NewButton("?", Navy, localize: false);
+        ayudaDnet.AccessibleName = UiText.Get("Dnet.HelpAccessible");
         ayudaDnet.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
         ayudaDnet.Size = new Size(36, 30);
         ayudaDnet.Margin = new Padding(2, 4, 0, 2);
-        ayudaDnet.Click += (_, _) => MessageBox.Show(this,
-            "Hay dos formas de trabajar:\n\n" +
-            "• Capturas normales: los botones Zona, Pantallas, Pantalla principal y " +
-            "Capturar ventana abren siempre el editor para pintar, escribir, recortar u ocultar datos.\n\n" +
-            "• Captura directa DNET: el botón 'Captura DNET en 5 s' y el archivo " +
-            "capturar_dnet.txt guardan el PNG directamente, sin abrir el editor y sin cambiar el foco.\n\n" +
-            "Esta casilla solamente activa o desactiva el disparo externo DNET. No cambia " +
-            "el funcionamiento de los botones normales.",
-            "Ayuda del modo DNET", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        ayudaDnet.Click += (_, _) => ShowDnetHelp();
         var modoDnetPanel = new FlowLayoutPanel
         {
             Dock = DockStyle.Fill,
@@ -234,12 +250,12 @@ internal sealed class MainForm : Form
         modoDnetPanel.Controls.Add(modoDnet);
         modoDnetPanel.Controls.Add(ayudaDnet);
         dnetRow.Controls.Add(modoDnetPanel, 0, 0);
-        var elegirCarpetaDnet = NewButton("Elegir carpeta…", Navy);
+        var elegirCarpetaDnet = NewButton("Dnet.ChooseFolder", Navy);
         elegirCarpetaDnet.Font = new Font("Segoe UI", 9f);
         elegirCarpetaDnet.Margin = new Padding(5, 4, 5, 5);
         elegirCarpetaDnet.Click += (_, _) => ElegirCarpetaDnet();
         dnetRow.Controls.Add(elegirCarpetaDnet, 1, 0);
-        var capturaDnet = NewButton("Captura DNET en 5 s", Blue);
+        var capturaDnet = NewButton("Dnet.Capture5", Blue);
         capturaDnet.Font = new Font("Segoe UI", 9f);
         capturaDnet.Margin = new Padding(5, 4, 5, 5);
         capturaDnet.Click += async (_, _) =>
@@ -257,30 +273,25 @@ internal sealed class MainForm : Form
         _dnetFolderLabel.ForeColor = Color.FromArgb(75, 88, 105);
         dnetRow.Controls.Add(_dnetFolderLabel, 0, 1);
         dnetRow.SetColumnSpan(_dnetFolderLabel, 3);
-        var instruccionesDnet = new Label
+        var instruccionesDnet = UiText.Bind(new Label
         {
             Dock = DockStyle.Fill,
             AutoEllipsis = true,
             ForeColor = Color.FromArgb(75, 88, 105),
-            TextAlign = ContentAlignment.MiddleLeft,
-            Text = @"Disparo externo sin cambiar el foco: %LOCALAPPDATA%\CapturaLibre_DNET\capturar_dnet.txt"
-        };
+            TextAlign = ContentAlignment.MiddleLeft
+        }, "Dnet.Trigger");
         dnetRow.Controls.Add(instruccionesDnet, 0, 2);
         dnetRow.SetColumnSpan(instruccionesDnet, 3);
         Place(content, dnetRow, 0, 7, 2);
 
-        var help = new Label
+        var help = UiText.Bind(new Label
         {
             Dock = DockStyle.Fill, ForeColor = Color.FromArgb(75, 88, 105),
-            Padding = new Padding(3, 12, 2, 0),
-            Text = "F6: zona · F7: todas las pantallas · F8: pantalla principal. " +
-                   "Puedes editar, recortar, girar y ocultar datos. " +
-                   "Si una ventana está minimizada, el capturador intentará restaurarla al seleccionarla. " +
-                   "El contenido de las capturas no se envía a internet."
-        };
+            Padding = new Padding(3, 12, 2, 0)
+        }, "Main.Help");
         Place(content, help, 0, 8, 2);
 
-        _status.Text = "Listo para capturar. Todo se procesa en tu ordenador.";
+        _status.Text = UiText.Get("Main.Ready");
         _status.ForeColor = Color.FromArgb(75, 88, 105);
         _status.Dock = DockStyle.Fill;
         _status.AutoEllipsis = true;
@@ -306,9 +317,10 @@ internal sealed class MainForm : Form
         };
     }
 
-    private static Button NewButton(string text, Color bg) => new()
+    private static Button NewButton(string textKey, Color bg, bool localize = true) => new()
     {
-        Text = text,
+        Name = localize ? "i18n:" + textKey : string.Empty,
+        Text = localize ? UiText.Get(textKey) : textKey,
         Dock = DockStyle.Fill,
         BackColor = bg,
         ForeColor = Color.White,
@@ -318,6 +330,68 @@ internal sealed class MainForm : Form
         Margin = new Padding(5, 3, 5, 8),
         UseVisualStyleBackColor = false
     };
+
+    private void ChangeLanguage()
+    {
+        if (_language.SelectedItem is not LanguageOption option) return;
+        UiText.SetLanguage(option.Code);
+        _settings.Language = option.Code;
+        _settings.Save();
+        Text = UiText.Get("Main.Title");
+        UiText.Apply(this);
+        _status.Text = UiText.Get("Main.Ready");
+        ActualizarEstadoModoDnet();
+    }
+
+    private void ShowDnetHelp()
+    {
+        using var dialog = new Form
+        {
+            Text = UiText.Get("Dnet.HelpTitle"),
+            Icon = Program.AppIcon,
+            StartPosition = FormStartPosition.CenterParent,
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            ClientSize = new Size(720, 500),
+            MinimizeBox = false,
+            MaximizeBox = false,
+            ShowInTaskbar = false,
+            Font = new Font("Segoe UI", 10.5f),
+            BackColor = Color.White
+        };
+
+        var body = new Label
+        {
+            Text = UiText.Get("Dnet.HelpBody"),
+            Dock = DockStyle.Fill,
+            Padding = new Padding(24, 22, 24, 12),
+            ForeColor = Navy
+        };
+        var footer = new Panel
+        {
+            Dock = DockStyle.Bottom,
+            Height = 64,
+            BackColor = Light,
+            Padding = new Padding(0, 12, 18, 12)
+        };
+        var accept = new Button
+        {
+            Text = UiText.Get("Dialog.OK"),
+            DialogResult = DialogResult.OK,
+            Dock = DockStyle.Right,
+            Width = 125,
+            BackColor = Blue,
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            UseVisualStyleBackColor = false
+        };
+        accept.FlatAppearance.BorderSize = 0;
+        footer.Controls.Add(accept);
+        dialog.Controls.Add(body);
+        dialog.Controls.Add(footer);
+        dialog.AcceptButton = accept;
+        dialog.CancelButton = accept;
+        dialog.ShowDialog(this);
+    }
 
     private static void Place(TableLayoutPanel grid, Control control, int column, int row, int span)
     {
@@ -524,7 +598,7 @@ internal sealed class MainForm : Form
 
     private void ActualizarEstadoModoDnet()
     {
-        _dnetFolderLabel.Text = "Carpeta: " + CarpetaDnet;
+        _dnetFolderLabel.Text = string.Format(UiText.Get("Dnet.Folder"), CarpetaDnet);
         _dnetFolderLabel.ForeColor = _settings.DnetMode ? Navy : Color.DimGray;
     }
 

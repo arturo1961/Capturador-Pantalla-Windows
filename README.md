@@ -1,12 +1,23 @@
-# 📸 CapturaLibre DNET 2.4.1 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.5.0 — C# / .NET 8
 
-CapturaLibre es un capturador y editor de pantalla **gratis, en español y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
+CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.4.1:** corrige la apertura del editor después de las capturas normales y mantiene separado el guardado directo DNET. Conservamos `PRUEBAS.md` para validar futuras modificaciones y nuevos equipos.
+> **Versión estable 2.5.0:** incorpora un selector de idioma, recuerda la elección y traduce la ventana principal, el editor, las paletas y la ayuda DNET.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
-La versión 2.4 incluye un **icono propio** para el EXE, las ventanas y la barra de tareas. Los archivos PNG e ICO están en `CapturaLibre/Assets/`. Conserva sin cambios funcionales las mejoras de la versión 2.3, incluido el botón **«Más colores…»** en el editor. Abre paletas de colores vivos, pastel, oscuros y neutros, además de un selector para elegir **cualquier color personalizado**. El cuadrito al lado del botón muestra el color activo.
+## Idiomas disponibles
+
+El mismo ejecutable permite cambiar el idioma desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio.
+
+- Español
+- English
+- Français
+- Deutsch
+- Italiano
+- Português
+
+La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barra de tareas. Los archivos PNG e ICO están en `CapturaLibre/Assets/`. También conserva el botón **«Más colores…»** en el editor, con paletas de colores vivos, pastel, oscuros y neutros y un selector para elegir cualquier color personalizado.
 
 ## Qué puedes hacer
 
@@ -31,7 +42,7 @@ La versión 2.4 incluye un **icono propio** para el EXE, las ventanas y la barra
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.4.1-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.5.0-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022
