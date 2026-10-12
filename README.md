@@ -1,5 +1,7 @@
 # 📸 CapturaLibre DNET 2.6.0 — C# / .NET 8
 
+[Español](README.md) | [简体中文](README.zh-CN.md)
+
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
 > **Versión estable 2.6.0:** incorpora captura guiada con lupa, nuevas herramientas de edición, perfiles, nombres automáticos, historial local y miniaturas de ventanas. Incluye 62 idiomas, el instalador para Windows y la edición portátil autónoma.
