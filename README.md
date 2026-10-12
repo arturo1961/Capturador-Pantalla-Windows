@@ -97,7 +97,17 @@ El archivo de disparo se elimina automáticamente después de procesarlo. Esto p
 
 ## Participar y donar
 
-Este proyecto es de código abierto. Consulta [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [DONACIONES.md](DONACIONES.md) y el archivo [LICENSE](LICENSE). Las donaciones son **opcionales**, ayudarán a continuar el desarrollo de **DNET 2.0.0** y se canalizarán mediante [GitHub Sponsors de arturo1961](https://github.com/sponsors/arturo1961) cuando GitHub apruebe el perfil. Todas las funciones seguirán siendo gratuitas.
+**CAPTURALIBRE ES GRATUITO Y LO SEGUIRÁ SIENDO. DONAR O NO DONAR ES DECISIÓN EXCLUSIVA DE CADA PERSONA.** ❤️
+
+Si CapturaLibre te resulta útil y quieres apoyar voluntariamente su mantenimiento y evolución, puedes hacerlo por cualquiera de estos medios:
+
+- [PayPal: paypal.me/acarballoflandes](https://paypal.me/acarballoflandes)
+- **Bizum:** `+34 662 024 169`
+- [GitHub Sponsors de arturo1961](https://github.com/sponsors/arturo1961), cuando el perfil esté disponible.
+
+Donar no desbloquea funciones, no ofrece ventajas especiales y no modifica la licencia ni las condiciones del programa. También puedes colaborar comunicando errores, proponiendo mejoras o difundiendo el proyecto.
+
+Consulta [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [DONACIONES.md](DONACIONES.md) y el archivo [LICENSE](LICENSE).
 
 ## Limitaciones conocidas
 

@@ -1,13 +1,15 @@
 # Donaciones voluntarias 💛
 
-CapturaLibre DNET es gratuito y **todas sus funciones seguirán disponibles sin pagos ni registros**. Las aportaciones voluntarias ayudarán a continuar el desarrollo del proyecto **DNET 2.0.0**, su motor, sus herramientas y su documentación.
+**CAPTURALIBRE ES GRATUITO Y LO SEGUIRÁ SIENDO. DONAR O NO DONAR ES DECISIÓN EXCLUSIVA DE CADA PERSONA.** ❤️
 
-El repositorio está preparado para mostrar el perfil público de GitHub Sponsors de `arturo1961`. La recepción de patrocinios comenzará cuando GitHub termine de revisar y aprobar ese perfil.
+CapturaLibre DNET es software libre con licencia MIT. Todas sus funciones están disponibles sin pagos, suscripciones ni registros. Una aportación voluntaria ayuda al mantenimiento, la documentación y la evolución del proyecto, pero no desbloquea funciones ni modifica sus condiciones.
 
-Para mostrar un botón de donación en GitHub:
+## Formas de colaborar económicamente
 
-1. Publica el archivo `.github/FUNDING.yml` incluido en el repositorio.
-2. Cuando GitHub apruebe el perfil, revisa que aparezca el botón «Sponsor».
-3. Si en el futuro quieres añadir Ko-fi, PayPal u otra plataforma, incorpora únicamente su enlace público real.
+- **PayPal:** [paypal.me/acarballoflandes](https://paypal.me/acarballoflandes)
+- **Bizum:** `+34 662 024 169`
+- **GitHub Sponsors:** [github.com/sponsors/arturo1961](https://github.com/sponsors/arturo1961), cuando GitHub apruebe y active el perfil.
 
-Nunca incluyas claves API, contraseñas ni datos de tarjetas en el repositorio. Aquí **no hay enlaces de cobro configurados**.
+No existe una cantidad mínima. Si no deseas donar, puedes ayudar igualmente comunicando errores, proponiendo mejoras, corrigiendo traducciones o difundiendo CapturaLibre.
+
+Nunca compartas claves, contraseñas ni datos de tarjetas. Utiliza únicamente los enlaces y datos publicados en este repositorio oficial.
