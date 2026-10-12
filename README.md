@@ -102,6 +102,7 @@ El archivo de disparo se elimina automáticamente después de procesarlo. Esto p
 Si CapturaLibre te resulta útil y quieres apoyar voluntariamente su mantenimiento y evolución, puedes hacerlo por cualquiera de estos medios:
 
 - [PayPal: paypal.me/acarballoflandes](https://paypal.me/acarballoflandes)
+- [Ko-fi: ko-fi.com/arturocarballo](https://ko-fi.com/arturocarballo)
 - **Bizum:** `+34 662 024 169`
 - [GitHub Sponsors de arturo1961](https://github.com/sponsors/arturo1961), cuando el perfil esté disponible.
 
