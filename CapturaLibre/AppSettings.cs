@@ -51,7 +51,13 @@ internal sealed class AppSettings
         {
             // Si los ajustes están dañados, el programa sigue funcionando con valores por defecto.
         }
-        return new AppSettings { SettingsVersion = CurrentSettingsVersion };
+        var defaults = new AppSettings
+        {
+            SettingsVersion = CurrentSettingsVersion,
+            Language = UiText.DetectWindowsLanguage()
+        };
+        defaults.Save();
+        return defaults;
     }
 
     public void Save()

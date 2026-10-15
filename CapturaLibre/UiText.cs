@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace CapturaLibre;
 
 internal sealed record LanguageOption(string Code, string DisplayName)
@@ -440,6 +442,39 @@ internal static class UiText
     public static string CurrentLanguage { get; private set; } = "es";
 
     public static bool IsRightToLeft => RightToLeftLanguages.Contains(CurrentLanguage);
+
+    public static string DetectWindowsLanguage()
+    {
+        CultureInfo culture = CultureInfo.CurrentUICulture;
+        string windowsCode = culture.Name;
+
+        // Algunas variantes de Windows no coinciden literalmente con el nombre
+        // de nuestros paquetes, aunque pertenecen al mismo idioma.
+        if (windowsCode.Contains("valencia", StringComparison.OrdinalIgnoreCase)) return "val";
+        if (windowsCode.StartsWith("zh", StringComparison.OrdinalIgnoreCase))
+        {
+            bool traditional = windowsCode.Contains("Hant", StringComparison.OrdinalIgnoreCase)
+                || culture.Name.EndsWith("-TW", StringComparison.OrdinalIgnoreCase)
+                || culture.Name.EndsWith("-HK", StringComparison.OrdinalIgnoreCase)
+                || culture.Name.EndsWith("-MO", StringComparison.OrdinalIgnoreCase);
+            return traditional ? "zh-Hant" : "zh-Hans";
+        }
+
+        LanguageOption? exact = Languages.FirstOrDefault(option =>
+            option.Code.Equals(windowsCode, StringComparison.OrdinalIgnoreCase));
+        if (exact is not null) return exact.Code;
+
+        string neutralCode = culture.TwoLetterISOLanguageName;
+        if (neutralCode.Equals("nb", StringComparison.OrdinalIgnoreCase)
+            || neutralCode.Equals("nn", StringComparison.OrdinalIgnoreCase))
+            neutralCode = "no";
+        else if (neutralCode.Equals("oc", StringComparison.OrdinalIgnoreCase))
+            neutralCode = "oc-ES";
+
+        LanguageOption? neutral = Languages.FirstOrDefault(option =>
+            option.Code.Equals(neutralCode, StringComparison.OrdinalIgnoreCase));
+        return neutral?.Code ?? "es";
+    }
 
     public static void SetLanguage(string? code) =>
         CurrentLanguage = Texts.ContainsKey(code ?? string.Empty) ? code! : "es";

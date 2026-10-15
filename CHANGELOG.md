@@ -6,6 +6,7 @@
 - Nuevo atajo global **Impr Pant** mientras CapturaLibre está en ejecución: toma la captura sin activar la ventana del programa y conserva abierto el menú que se está documentando.
 - La captura obtenida abre el editor normal para poder recortar, señalar, escribir u ocultar información.
 - El nuevo botón está traducido en los 62 idiomas incluidos.
+- En una instalación nueva, el programa selecciona automáticamente el idioma configurado en Windows y conserva cualquier cambio manual posterior.
 
 ## 2.6.0 (captura y edición avanzada)
 

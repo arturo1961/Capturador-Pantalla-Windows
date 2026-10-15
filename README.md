@@ -10,7 +10,7 @@ CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de c
 
 ## Idiomas disponibles
 
-El mismo ejecutable permite cambiar entre **62 idiomas** desde el selector situado en la esquina superior derecha. La elección se conserva para el siguiente inicio. Están incluidos el español, asturiano, catalán, valenciano, gallego, euskera y aranés/occitano, además de una selección amplia de idiomas europeos, asiáticos y de otras regiones.
+El mismo ejecutable permite cambiar entre **62 idiomas** desde el selector situado en la esquina superior derecha. En el primer inicio utiliza automáticamente el idioma configurado en Windows 10 u 11, siempre que esté disponible; después conserva la elección del usuario para los siguientes inicios. Están incluidos el español, asturiano, catalán, valenciano, gallego, euskera y aranés/occitano, además de una selección amplia de idiomas europeos, asiáticos y de otras regiones.
 
 Los botones ajustan automáticamente el tamaño de sus textos para que las traducciones largas no queden cortadas. Árabe, hebreo, persa y urdu cambian también la disposición de la ventana al sentido de lectura de derecha a izquierda.
 

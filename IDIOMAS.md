@@ -1,6 +1,6 @@
 # Idiomas de CapturaLibre
 
-CapturaLibre incluye **62 idiomas** en un único ejecutable. El idioma se elige en la esquina superior derecha y queda guardado para el siguiente inicio.
+CapturaLibre incluye **62 idiomas** en un único ejecutable. En el primer inicio adopta automáticamente el idioma de Windows cuando existe una traducción compatible. El idioma también se puede elegir en la esquina superior derecha y queda guardado para los siguientes inicios.
 
 ## España
 
