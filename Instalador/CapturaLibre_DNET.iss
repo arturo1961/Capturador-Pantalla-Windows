@@ -1,5 +1,5 @@
 #define MyAppName "CapturaLibre DNET"
-#define MyAppVersion "2.6.0"
+#define MyAppVersion "2.6.1"
 #define MyAppPublisher "arturo1961"
 #define MyAppURL "https://github.com/arturo1961/Capturador-Pantalla-Windows"
 #define MyAppExeName "CapturaLibre_DNET.exe"
@@ -17,8 +17,8 @@ DefaultDirName={localappdata}\Programs\CapturaLibre DNET
 DefaultGroupName=CapturaLibre DNET
 DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE
-OutputDir=..\instalador_2.6.0
-OutputBaseFilename=Instalar_CapturaLibre_DNET_2.6.0
+OutputDir=..\instalador_2.6.1
+OutputBaseFilename=Instalar_CapturaLibre_DNET_2.6.1
 SetupIconFile=..\CapturaLibre\Assets\CapturaLibre.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64
@@ -29,7 +29,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=yes
 RestartApplications=no
-VersionInfoVersion=2.6.0.0
+VersionInfoVersion=2.6.1.0
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription=Instalador de CapturaLibre DNET
 VersionInfoProductName={#MyAppName}
@@ -47,7 +47,7 @@ Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\publicar_2.6.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\publicar_2.6.1\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\CapturaLibre DNET"; Filename: "{app}\{#MyAppExeName}"

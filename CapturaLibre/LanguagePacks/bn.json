@@ -10,6 +10,7 @@
     "Main.Heading": "আপনি কি ক্যাপচার করতে চান?",
     "Main.Language": "ভাষা:",
     "Capture.Region": "মাউস দিয়ে এলাকা নির্বাচন করুন   [F6]",
+    "Capture.NoFocus": "ফোকাস অক্ষুণ্ণ · ৫ সে   [Print Screen]",
     "Capture.All": "সকল স্ক্রিন   [F7]",
     "Capture.Primary": "প্রধান স্ক্রিন   [F8]",
     "Capture.WindowSection": "একটি নির্দিষ্ট উইন্ডো ধরুন",

@@ -10,6 +10,7 @@
     "Main.Heading": "co chcete zachytit?",
     "Main.Language": "jazyk:",
     "Capture.Region": "Vyberte zónu myší [F6]",
+    "Capture.NoFocus": "Zachovat fokus · 5 s   [Print Screen]",
     "Capture.All": "Všechny obrazovky [F7]",
     "Capture.Primary": "Hlavní obrazovka [F8]",
     "Capture.WindowSection": "Zachyťte konkrétní okno",

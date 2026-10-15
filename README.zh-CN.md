@@ -1,10 +1,10 @@
-# 📸 CapturaLibre DNET 2.6.0 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.6.1 — C# / .NET 8
 
 [Español](README.md) | [简体中文](README.zh-CN.md)
 
 CapturaLibre 是一款面向 Windows 10 和 Windows 11 的**免费、多语言、开源**截图与图片编辑工具。程序完全在本地运行，不含广告、遥测，也不会自动上传截图。项目采用 [MIT 许可证](LICENSE)。
 
-稳定版 2.6.0 支持精确区域截图、窗口截图、多屏幕截图、延时截图、图片标注、裁剪、旋转、隐私遮挡、配置方案、自动命名和本地历史记录。同一个可执行文件内置 **62 种语言**，其中包括简体中文和繁体中文。
+稳定版 2.6.1 新增“不切换焦点”截图：可使用 5 秒准备按钮，或在 CapturaLibre 运行时按全局 **Print Screen** 键，保留已展开的菜单并在截图后打开编辑器。同一个可执行文件内置 **62 种语言**。
 
 ## 主要功能
 
@@ -23,7 +23,7 @@ CapturaLibre 是一款面向 Windows 10 和 Windows 11 的**免费、多语言�
 
 请前往 [GitHub Releases 最新版本](https://github.com/arturo1961/Capturador-Pantalla-Windows/releases/latest)。
 
-- `Instalar_CapturaLibre_DNET_2.6.0.exe`：推荐的安装版，包含安装向导和卸载程序。
+- `Instalar_CapturaLibre_DNET_2.6.1.exe`：推荐的安装版，包含安装向导和卸载程序。
 - `CapturaLibre_DNET.exe`：免安装便携版，可直接运行。
 
 两个版本均为 Windows x64 自包含程序，无需预先安装 .NET 8。

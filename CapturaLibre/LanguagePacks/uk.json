@@ -10,6 +10,7 @@
     "Main.Heading": "Що ви хочете зафіксувати?",
     "Main.Language": "мова:",
     "Capture.Region": "Виберіть зону мишкою [F6]",
+    "Capture.NoFocus": "Не змінювати фокус · 5 с   [Print Screen]",
     "Capture.All": "Усі екрани [F7]",
     "Capture.Primary": "Головний екран [F8]",
     "Capture.WindowSection": "Захоплення певного вікна",

@@ -10,6 +10,7 @@
     "Main.Heading": "Was möchtest du aufnehmen?",
     "Main.Language": "Sprache:",
     "Capture.Region": "Bereich mit der Maus auswählen   [F6]",
+    "Capture.NoFocus": "Fokus behalten · 5 s   [Druck]",
     "Capture.All": "Alle Bildschirme   [F7]",
     "Capture.Primary": "Hauptbildschirm   [F8]",
     "Capture.WindowSection": "Ein bestimmtes Fenster erfassen",

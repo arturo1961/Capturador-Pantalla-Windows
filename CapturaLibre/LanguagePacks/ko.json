@@ -10,6 +10,7 @@
     "Main.Heading": "무엇을 캡처하시겠습니까?",
     "Main.Language": "언어:",
     "Capture.Region": "마우스로 영역 선택   [F6]",
+    "Capture.NoFocus": "포커스 유지 · 5초   [Print Screen]",
     "Capture.All": "모든 화면   [F7]",
     "Capture.Primary": "주 화면   [F8]",
     "Capture.WindowSection": "특정 창 캡처",

@@ -10,6 +10,7 @@
     "Main.Heading": "Ne yakalamak istiyorsun?",
     "Main.Language": "Dil:",
     "Capture.Region": "Fare ile alan seç   [F6]",
+    "Capture.NoFocus": "Odağı koru · 5 sn   [Print Screen]",
     "Capture.All": "Tüm ekranlar   [F7]",
     "Capture.Primary": "Ana ekran   [F8]",
     "Capture.WindowSection": "Belirli bir pencereyi yakala",

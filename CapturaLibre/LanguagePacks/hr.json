@@ -10,6 +10,7 @@
     "Main.Heading": "Što želite snimiti?",
     "Main.Language": "Jezik:",
     "Capture.Region": "Odaberite zonu mišem [F6]",
+    "Capture.NoFocus": "Zadrži fokus · 5 s   [Print Screen]",
     "Capture.All": "Svi zasloni [F7]",
     "Capture.Primary": "Glavni zaslon [F8]",
     "Capture.WindowSection": "Snimite određeni prozor",

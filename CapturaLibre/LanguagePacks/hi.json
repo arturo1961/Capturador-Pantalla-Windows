@@ -10,6 +10,7 @@
     "Main.Heading": "आप क्या कैप्चर करना चाहते हैं?",
     "Main.Language": "भाषा:",
     "Capture.Region": "माउस से क्षेत्र चुनें   [F6]",
+    "Capture.NoFocus": "फ़ोकस बनाए रखें · 5 से   [Print Screen]",
     "Capture.All": "सभी स्क्रीनें   [F7]",
     "Capture.Primary": "मुख्य स्क्रीन   [F8]",
     "Capture.WindowSection": "एक विशिष्ट विंडो को कैप्चर करें",

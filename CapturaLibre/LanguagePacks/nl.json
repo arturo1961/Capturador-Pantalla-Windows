@@ -10,6 +10,7 @@
     "Main.Heading": "Wat wil je vastleggen?",
     "Main.Language": "Taal:",
     "Capture.Region": "Zone selecteren met muis [F6]",
+    "Capture.NoFocus": "Focus behouden · 5 s   [Print Screen]",
     "Capture.All": "Alle schermen [F7]",
     "Capture.Primary": "Hoofdscherm [F8]",
     "Capture.WindowSection": "Leg een specifiek venster vast",

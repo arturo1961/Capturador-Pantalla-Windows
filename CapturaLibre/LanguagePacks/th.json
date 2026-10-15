@@ -10,6 +10,7 @@
     "Main.Heading": "คุณต้องการจับภาพอะไร?",
     "Main.Language": "ภาษา:",
     "Capture.Region": "เลือกพื้นที่ด้วยเมาส์   [F6]",
+    "Capture.NoFocus": "คงโฟกัส · 5 วิ   [Print Screen]",
     "Capture.All": "ทุกหน้าจอ   [F7]",
     "Capture.Primary": "หน้าจอหลัก   [F8]",
     "Capture.WindowSection": "จับภาพหน้าต่างเฉพาะ",

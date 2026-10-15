@@ -10,6 +10,7 @@
     "Main.Heading": "你想要截取什麼？",
     "Main.Language": "語言：",
     "Capture.Region": "用滑鼠選取區域   [F6]",
+    "Capture.NoFocus": "保持焦點 · 5 秒   [Print Screen]",
     "Capture.All": "全部螢幕   [F7]",
     "Capture.Primary": "主螢幕   [F8]",
     "Capture.WindowSection": "捕捉特定視窗",

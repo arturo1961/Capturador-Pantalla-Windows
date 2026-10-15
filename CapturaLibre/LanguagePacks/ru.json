@@ -10,6 +10,7 @@
     "Main.Heading": "Что вы хотите запечатлеть?",
     "Main.Language": "Язык:",
     "Capture.Region": "Выбрать зону мышкой [F6]",
+    "Capture.NoFocus": "Не менять фокус · 5 с   [Print Screen]",
     "Capture.All": "Все экраны [F7]",
     "Capture.Primary": "Главный экран [F8]",
     "Capture.WindowSection": "Захватить конкретное окно",

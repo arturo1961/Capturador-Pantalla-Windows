@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## 2.6.1 (captura sin perder el foco)
+
+- Nuevo botón **«Sin perder el foco · 5 s»**: oculta CapturaLibre y deja tiempo para abrir un menú o desplegable antes de capturar la pantalla principal.
+- Nuevo atajo global **Impr Pant** mientras CapturaLibre está en ejecución: toma la captura sin activar la ventana del programa y conserva abierto el menú que se está documentando.
+- La captura obtenida abre el editor normal para poder recortar, señalar, escribir u ocultar información.
+- El nuevo botón está traducido en los 62 idiomas incluidos.
+
 ## 2.6.0 (captura y edición avanzada)
 
 - Lupa con coordenadas y punto de mira al seleccionar una zona.

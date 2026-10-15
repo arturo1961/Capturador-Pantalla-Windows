@@ -10,6 +10,7 @@
     "Main.Heading": "چه چیزی می‌خواهید ضبط کنید؟",
     "Main.Language": "زبان:",
     "Capture.Region": "انتخاب ناحیه با موس   [F6]",
+    "Capture.NoFocus": "بدون تغییر تمرکز · ۵ ث   [Print Screen]",
     "Capture.All": "تمام صفحه‌ها   [F7]",
     "Capture.Primary": "صفحه اصلی   [F8]",
     "Capture.WindowSection": "گرفتن یک پنجره خاص",

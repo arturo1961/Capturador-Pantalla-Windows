@@ -4,6 +4,8 @@ internal enum CaptureMode { Region, AllScreens, PrimaryScreen, Window }
 
 internal sealed class MainForm : Form
 {
+    private const int PrintScreenHotKeyId = 0x434C;
+    private const int WmHotKey = 0x0312;
     private readonly WindowManager _windows = new();
     private readonly AppSettings _settings = AppSettings.Load();
     private readonly ComboBox _delay = new();
@@ -15,6 +17,8 @@ internal sealed class MainForm : Form
     private readonly System.Windows.Forms.Timer _dnetTriggerTimer = new() { Interval = 350 };
     private readonly Label _dnetFolderLabel = new();
     private bool _busy;
+    private bool _editorOpen;
+    private bool _printScreenRegistered;
 
     private static readonly Color Navy = Color.FromArgb(29, 41, 59);
     private static readonly Color Blue = Color.FromArgb(30, 113, 205);
@@ -99,8 +103,18 @@ internal sealed class MainForm : Form
 
         Button region = NewButton("Capture.Region", Blue);
         region.Click += async (_, _) => await CaptureAsync(CaptureMode.Region);
-        Place(content, region, 0, 1, 2);
+        Place(content, region, 0, 1, 1);
         _captureButtons.Add(region);
+
+        // Un clic siempre cierra el menú abierto de otra aplicación. Este botón
+        // oculta CapturaLibre y deja cinco segundos para volver a abrirlo. Para
+        // capturar un menú que ya está abierto se registra además Impr Pant como
+        // tecla global mientras CapturaLibre permanezca en ejecución.
+        Button noFocus = NewButton("Capture.NoFocus", Blue);
+        noFocus.Click += async (_, _) =>
+            await CaptureAsync(CaptureMode.PrimaryScreen, delayOverrideSeconds: 5);
+        Place(content, noFocus, 1, 1, 1);
+        _captureButtons.Add(noFocus);
 
         Button all = NewButton("Capture.All", Navy);
         all.Click += async (_, _) => await CaptureAsync(CaptureMode.AllScreens);
@@ -373,6 +387,32 @@ internal sealed class MainForm : Form
         };
     }
 
+    protected override void OnHandleCreated(EventArgs e)
+    {
+        base.OnHandleCreated(e);
+        _printScreenRegistered = NativeHotKey.RegisterPrintScreen(Handle, PrintScreenHotKeyId);
+    }
+
+    protected override void OnHandleDestroyed(EventArgs e)
+    {
+        if (_printScreenRegistered)
+            NativeHotKey.Unregister(Handle, PrintScreenHotKeyId);
+        _printScreenRegistered = false;
+        base.OnHandleDestroyed(e);
+    }
+
+    protected override void WndProc(ref Message m)
+    {
+        if (m.Msg == WmHotKey && m.WParam.ToInt32() == PrintScreenHotKeyId)
+        {
+            // El mensaje llega sin activar CapturaLibre: el menú o desplegable de
+            // la aplicación que se está documentando permanece abierto.
+            _ = CaptureAsync(CaptureMode.PrimaryScreen);
+            return;
+        }
+        base.WndProc(ref m);
+    }
+
     private static Button NewButton(string textKey, Color bg, bool localize = true) => new AutoFitButton
     {
         Name = localize ? "i18n:" + textKey : string.Empty,
@@ -391,7 +431,7 @@ internal sealed class MainForm : Form
     {
         Version? assemblyVersion = typeof(MainForm).Assembly.GetName().Version;
         string version = assemblyVersion is null
-            ? "2.6.0"
+            ? "2.6.1"
             : $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{Math.Max(assemblyVersion.Build, 0)}";
 
         // Conserva la traducción del título, pero la versión siempre procede
@@ -697,9 +737,10 @@ internal sealed class MainForm : Form
         }
     }
 
-    private async Task CaptureAsync(CaptureMode mode, bool guardarDirectamenteDnet = false)
+    private async Task CaptureAsync(CaptureMode mode, bool guardarDirectamenteDnet = false,
+        int? delayOverrideSeconds = null)
     {
-        if (_busy) return;
+        if (_busy || _editorOpen) return;
         WindowChoice? selected = null;
         if (mode == CaptureMode.Window)
         {
@@ -718,7 +759,7 @@ internal sealed class MainForm : Form
         string? captureError = null;
         try
         {
-            int seconds = int.Parse((string)_delay.SelectedItem!);
+            int seconds = delayOverrideSeconds ?? int.Parse((string)_delay.SelectedItem!);
             Hide();
             if (seconds > 0)
             {
@@ -820,6 +861,7 @@ internal sealed class MainForm : Form
         }
         try
         {
+            _editorOpen = true;
             using var editor = new EditorForm(shot, _settings);
             shot = null; // A partir de aquí el editor se encarga del Bitmap.
             editor.ShowDialog(this);
@@ -829,7 +871,11 @@ internal sealed class MainForm : Form
             MessageBox.Show(this, UiText.Get("Error.OpenEditor") + "\n" + ex.Message,
                 "CapturaLibre", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        finally { shot?.Dispose(); }
+        finally
+        {
+            _editorOpen = false;
+            shot?.Dispose();
+        }
     }
 
     private string GetQuickSaveFolder()

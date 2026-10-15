@@ -10,6 +10,7 @@
     "Main.Heading": "آپ کیا کیپچر کرنا چاہتے ہیں؟",
     "Main.Language": "زبان:",
     "Capture.Region": "ماؤس سے زون منتخب کریں   [F6]",
+    "Capture.NoFocus": "فوکس برقرار · 5 سیکنڈ   [Print Screen]",
     "Capture.All": "تمام اسکرینیں   [F7]",
     "Capture.Primary": "مین اسکرین   [F8]",
     "Capture.WindowSection": "ایک مخصوص ونڈو کو پکڑیں",

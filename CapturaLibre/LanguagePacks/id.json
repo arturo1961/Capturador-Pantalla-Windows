@@ -10,6 +10,7 @@
     "Main.Heading": "Apa yang ingin Anda tangkap?",
     "Main.Language": "Bahasa:",
     "Capture.Region": "Pilih area dengan mouse   [F6]",
+    "Capture.NoFocus": "Pertahankan fokus · 5 dtk   [Print Screen]",
     "Capture.All": "Semua layar   [F7]",
     "Capture.Primary": "Layar utama   [F8]",
     "Capture.WindowSection": "Menangkap jendela tertentu",

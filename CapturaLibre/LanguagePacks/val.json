@@ -10,6 +10,7 @@
     "Main.Heading": "Què vols capturar?",
     "Main.Language": "Idioma:",
     "Capture.Region": "Seleccioneu zona amb el ratolí [F6]",
+    "Capture.NoFocus": "Sense perdre el focus · 5 s   [Impr Pant]",
     "Capture.All": "Totes les pantalles [F7]",
     "Capture.Primary": "Pantalla principal [F8]",
     "Capture.WindowSection": "Capturar una finestra específica",

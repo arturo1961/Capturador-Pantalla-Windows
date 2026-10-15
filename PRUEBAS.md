@@ -1,4 +1,4 @@
-# Lista de pruebas de CapturaLibre 2.5, edición DNET (Windows)
+# Lista de pruebas de CapturaLibre 2.6.1, edición DNET (Windows)
 
 Registra versión de Windows, resolución/escalado de cada pantalla y el resultado de cada punto antes de distribuir el EXE.
 
@@ -16,6 +16,8 @@ Registra versión de Windows, resolución/escalado de cada pantalla y el resulta
 - [ ] La selección de zona muestra lupa, punto de mira, coordenadas y tamaño en píxeles.
 - [ ] Capturas con F6/F7/F8 y los botones de pantalla/zona funcionan.
 - [ ] Retardos de 0, 3, 5 y 10 segundos funcionan.
+- [ ] «Sin perder el foco · 5 s» oculta CapturaLibre, permite abrir un menú durante la cuenta atrás y abre después la captura en el editor.
+- [ ] Con un menú desplegado en otra aplicación, **Impr Pant** captura la pantalla sin activar CapturaLibre ni cerrar el menú antes de tomar la imagen.
 - [ ] Se capturan monitores múltiples, incluso uno situado a la izquierda del principal.
 - [ ] La ventana de CapturaLibre no aparece en sus propias capturas.
 - [ ] Puedes dibujar flechas, figuras, texto y lápiz; cambiar grosor y color.

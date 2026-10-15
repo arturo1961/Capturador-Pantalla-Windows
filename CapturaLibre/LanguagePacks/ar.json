@@ -10,6 +10,7 @@
     "Main.Heading": "ماذا تريد أن تلتقط؟",
     "Main.Language": "اللغة:",
     "Capture.Region": "تحديد المنطقة بالفأرة   [F6]",
+    "Capture.NoFocus": "الحفاظ على التركيز · 5 ث   [Print Screen]",
     "Capture.All": "كل الشاشات   [F7]",
     "Capture.Primary": "الشاشة الرئيسية   [F8]",
     "Capture.WindowSection": "التقاط نافذة محددة",

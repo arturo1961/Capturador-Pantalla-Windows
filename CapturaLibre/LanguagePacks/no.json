@@ -10,6 +10,7 @@
     "Main.Heading": "Hva vil du fange?",
     "Main.Language": "Språk:",
     "Capture.Region": "Velg sone med musen [F6]",
+    "Capture.NoFocus": "Behold fokus · 5 s   [Print Screen]",
     "Capture.All": "Alle skjermer [F7]",
     "Capture.Primary": "Hovedskjerm [F8]",
     "Capture.WindowSection": "Ta et spesifikt vindu",

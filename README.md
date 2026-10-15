@@ -1,10 +1,10 @@
-# 📸 CapturaLibre DNET 2.6.0 — C# / .NET 8
+# 📸 CapturaLibre DNET 2.6.1 — C# / .NET 8
 
 [Español](README.md) | [简体中文](README.zh-CN.md)
 
 CapturaLibre es un capturador y editor de pantalla **gratis, multilingüe y de código abierto**, para Windows 10 y 11. El proyecto funciona **localmente**: no tiene publicidad, telemetría ni subida automática de capturas. Licencia [MIT](LICENSE).
 
-> **Versión estable 2.6.0:** incorpora captura guiada con lupa, nuevas herramientas de edición, perfiles, nombres automáticos, historial local y miniaturas de ventanas. Incluye 62 idiomas, el instalador para Windows y la edición portátil autónoma.
+> **Versión estable 2.6.1:** añade captura sin perder el foco mediante un botón con cinco segundos de preparación y mediante la tecla global Impr Pant. Conserva la captura guiada, el editor avanzado, los perfiles, el historial local y los 62 idiomas.
 
 **Compatibilidad:** esta variante apunta a **.NET 8**, compatible con **Visual Studio 2022 17.8 o posterior**, siempre que tengas instalado el SDK de .NET 8 y el componente de desarrollo de escritorio. Lee [SOLUCION_VISUAL_STUDIO.md](SOLUCION_VISUAL_STUDIO.md) si aparece el error sobre .NET 10.
 
@@ -24,6 +24,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 - Seleccionar una zona con lupa, coordenadas y punto de mira para conseguir recortes precisos.
 - **Seleccionar una ventana de una lista** (botón «Actualizar lista»). Se intenta restaurarla si está minimizada. La captura usa los píxeles visibles en pantalla: ventanas superpuestas, contenido protegido o ciertas aplicaciones aceleradas por GPU pueden no capturarse correctamente.
 - Activar retardos de 0, 3, 5 y 10 segundos.
+- **Capturar menús sin perder el foco**: pulsa el botón dedicado y abre el menú durante la cuenta atrás, o deja abierto el menú y pulsa **Impr Pant** mientras CapturaLibre está en ejecución. La imagen se abre después en el editor normal.
 - **Minimizar otras ventanas al iniciar, sin cerrarlas**, o desactivar esa opción. El ajuste se guarda para siguientes inicios en `%LOCALAPPDATA%\CapturaLibre_DNET\ajustes.json`. También puedes restaurarlas mediante un botón; al cerrar CapturaLibre se intenta restaurar las que minimizó el programa.
 - Editar con flechas, rectángulos, elipses, lápiz, pasos numerados y texto enriquecido; pixelar, desenfocar u ocultar datos; mover la última anotación y escoger colores básicos o personalizados.
 - **Recortar**, **girar 90°** y **voltear** la imagen; deshacer hasta seis cambios.
@@ -45,7 +46,7 @@ La versión 2.5 mantiene el **icono propio** para el EXE, las ventanas y la barr
 
 La publicación ofrece dos opciones:
 
-- `Instalar_CapturaLibre_DNET_2.6.0.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
+- `Instalar_CapturaLibre_DNET_2.6.1.exe`: opción recomendada, con asistente, menú Inicio, acceso directo opcional y desinstalador de Windows.
 - `CapturaLibre_DNET.exe`: edición portátil que se abre directamente sin instalación.
 
 Ambas son autónomas y no necesitan que .NET 8 esté instalado.
@@ -56,7 +57,7 @@ Ambas son autónomas y no necesitan que .NET 8 esté instalado.
 
 1. Sube **el contenido de esta carpeta**, incluyendo `.github`, a la raíz de un repositorio de GitHub. Lee [PUBLICAR_EN_GITHUB.md](PUBLICAR_EN_GITHUB.md) para los pasos.
 2. En el repositorio abre **Actions** y busca «Compilar CapturaLibre para Windows».
-3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.6.0-Windows-x64**.
+3. Ejecuta el flujo (o espera a que se ejecute con el push). Solo si sale **verde**, abre la ejecución y descarga el artefacto **CapturaLibre-DNET-2.6.1-Windows-x64**.
 4. Extrae el ZIP descargado del artefacto: ahí encontrarás el `.exe` creado por GitHub. **Pruébalo** antes de distribuirlo como versión estable.
 
 ### Opción 2 — Compilar desde Windows o Visual Studio 2022
@@ -79,6 +80,7 @@ El resultado del comando `dotnet publish` se guarda en `publicar\CapturaLibre_DN
 
 1. Abre la aplicación. La edición DNET no minimiza otras ventanas al iniciar. Puedes activar esa opción manualmente si alguna vez la necesitas.
 2. Pulsa uno de los botones para elegir qué capturar. Si quieres una ventana, selecciónala en la lista y pulsa «Capturar ventana».
+   Para conservar un menú desplegado, ábrelo en la aplicación correspondiente y pulsa **Impr Pant**. También puedes pulsar «Sin perder el foco · 5 s» y abrir el menú durante la cuenta atrás.
 3. En el editor, usa herramientas, recorta o gira. Para ampliar los colores, pulsa **«Más colores…»**, selecciona una paleta o «Elegir cualquier color…». El color elegido se usa en flechas, texto, figuras y lápiz. Guarda o copia la imagen.
 4. Si necesitas las ventanas anteriores, pulsa «Restaurar ventanas».
 

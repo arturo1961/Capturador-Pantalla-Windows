@@ -10,6 +10,7 @@
     "Main.Heading": "Vad vill du fånga?",
     "Main.Language": "Språk:",
     "Capture.Region": "Välj zon med musen [F6]",
+    "Capture.NoFocus": "Behåll fokus · 5 s   [Print Screen]",
     "Capture.All": "Alla skärmar [F7]",
     "Capture.Primary": "Huvudskärm [F8]",
     "Capture.WindowSection": "Fånga ett specifikt fönster",

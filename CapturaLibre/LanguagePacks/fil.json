@@ -10,6 +10,7 @@
     "Main.Heading": "Ano ang nais mong kuhanan?",
     "Main.Language": "Wika:",
     "Capture.Region": "Pumili ng bahagi gamit ang mouse   [F6]",
+    "Capture.NoFocus": "Panatilihin ang focus · 5 s   [Print Screen]",
     "Capture.All": "Lahat ng screen   [F7]",
     "Capture.Primary": "Pangunahing screen   [F8]",
     "Capture.WindowSection": "Kuhanan ng larawan ang isang partikular na bintana",

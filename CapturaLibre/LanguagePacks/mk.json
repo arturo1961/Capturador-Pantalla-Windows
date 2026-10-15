@@ -10,6 +10,7 @@
     "Main.Heading": "Што сакаш да снимиш?",
     "Main.Language": "Јазик:",
     "Capture.Region": "Избери област со глувчето   [F6]",
+    "Capture.NoFocus": "Задржи фокус · 5 сек   [Print Screen]",
     "Capture.All": "Сите екрани   [F7]",
     "Capture.Primary": "Главен екран   [F8]",
     "Capture.WindowSection": "Фотографирај специфичен прозорец",
